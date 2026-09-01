@@ -65,6 +65,8 @@ table.foglio tr.hl td{background:var(--accent-soft);font-weight:700;color:#6b4c0
 table.foglio tr.tot td{font-weight:700;background:var(--brand-soft);border-top:2px solid var(--brand);border-bottom:2px solid var(--brand)}
 table.foglio tr.excl td{color:var(--ink-soft)}
 table.foglio tr.excl td:first-child::after{content:"escluso dalla base";display:inline-block;margin-left:8px;padding:1px 6px;border-radius:4px;background:var(--warn-soft);color:var(--warn);font-size:10px;font-weight:700;letter-spacing:.2px;vertical-align:1px}
+table.foglio tr.detr td{color:var(--err)}
+table.foglio tr.detr td:first-child::after{content:"a dedurre";display:inline-block;margin-left:8px;padding:1px 6px;border-radius:4px;background:var(--err-soft);color:var(--err);font-size:10px;font-weight:700;letter-spacing:.2px;vertical-align:1px}
 table.enti th,table.enti td{padding:6px;font-size:13px;border-bottom:1px solid var(--line);text-align:left}
 table.enti th{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--ink-soft)}
 table.mesi{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;min-width:600px}
@@ -125,6 +127,8 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
   .card>h2{background:#eee!important;color:#000}
   details.legal{display:none}
   .scroll-x{overflow:visible}
+  table.mesi{min-width:0;font-size:8.5px}
+  table.mesi th,table.mesi td{padding:3px 4px}
 }
 </style>
 </head>
@@ -241,6 +245,28 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
     </section>
 
     <section class="card">
+      <h2>Quota già corrisposta da altri enti</h2>
+      <div class="body">
+        <div class="grid g2">
+          <div>
+            <label for="magg-altri-tipo">Modalità del riparto</label>
+            <select id="magg-altri-tipo">
+              <option value="imp" selected>Importo mensile già riconosciuto</option>
+              <option value="pct">Quota % a carico degli altri enti</option>
+            </select>
+            <div class="hint">Da convenzione o dal cedolino dell'altro ente (voce 79)</div>
+          </div>
+          <div>
+            <label for="magg-altri">Maggiorazione già riconosciuta <span id="magg-altri-um">(€/mese)</span></label>
+            <input type="number" id="magg-altri" value="0" step="0.01" min="0">
+            <div class="hint" id="magg-altri-hint">0 = nessuna detrazione: l'ente corrisponde l'intera maggiorazione</div>
+          </div>
+        </div>
+        <div class="hint" style="margin-top:10px">La maggiorazione è <b>unica</b> e spetta a prescindere dal numero dei comuni convenzionati: si calcola una sola volta sulla retribuzione in godimento e il relativo onere è <b>ripartito fra gli enti</b> secondo la convenzione (art. 10 DPR 465/1997). Quanto già corrisposto dagli altri enti si detrae quindi da quanto dovuto dall'ente qui calcolato.</div>
+      </div>
+    </section>
+
+    <section class="card">
       <details class="adv">
         <summary>Opzioni avanzate</summary>
         <div class="body">
@@ -252,8 +278,8 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
             <div>
               <label for="mensilita">Mensilità di erogazione</label>
               <select id="mensilita">
-                <option value="12" selected>12 mensilità — ARAN AFL4</option>
-                <option value="13">13 mensilità — anche sulla 13ª</option>
+                <option value="13" selected>13 mensilità — con rateo in 13ª (ARAN SEG_032)</option>
+                <option value="12">12 mensilità — senza rateo di 13ª</option>
               </select>
             </div>
           </div>
@@ -266,9 +292,9 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
           <div class="row-flag"><input type="checkbox" id="b-pos" checked>
             <span><b>Retribuzione di posizione</b></span></div>
           <div class="row-flag"><input type="checkbox" id="b-magg" checked>
-            <span><b>Maggiorazione della posizione</b><em>L'art. 105 CCNL 17.12.2020 considera la posizione «compresa la maggiorazione ove attribuita dall'Ente»</em></span></div>
-          <div class="row-flag"><input type="checkbox" id="b-gall">
-            <span><b>Galleggiamento</b><em>Escluso per default: non rientra fra le voci elencate dall'art. 63. Attivare solo per riprodurre calcoli impostati diversamente.</em></span></div>
+            <span><b>Maggiorazione della posizione</b><em>ARAN AFL4 del 24.03.2021: va computata nella base del 25%. Conforme anche all'art. 105 CCNL 17.12.2020, che considera la posizione «compresa la maggiorazione ove attribuita dall'Ente».</em></span></div>
+          <div class="row-flag"><input type="checkbox" id="b-gall" checked>
+            <span><b>Galleggiamento</b><em>Incluso: per l'ARAN non è una voce autonoma ma «parte costitutiva della retribuzione di posizione» richiamata dall'art. 63 lett. c). Deselezionare solo per riprodurre calcoli impostati diversamente.</em></span></div>
           <div class="row-flag"><input type="checkbox" id="gall-cap">
             <span><b>Massimale al galleggiamento</b><em>€ 3.008,00 fasce A‑B — € 1.964,00 fascia C</em></span></div>
           <div class="row-flag"><input type="checkbox" id="incr15">
@@ -283,7 +309,7 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
       <h2>Prospetto di calcolo</h2>
       <div class="kpis">
         <div class="kpi gold">
-          <div class="lab">Maggiorazione convenzione</div>
+          <div class="lab" id="kpi-magg-lab">Maggiorazione convenzione</div>
           <div class="val" id="kpi-magg">—</div>
           <div class="sub" id="kpi-magg-sub">voce cedolino 79</div>
         </div>
@@ -321,7 +347,9 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
           <p><b>IVC (voce 53)</b> — importi mensili per fascia e decorrenza dalle tabelle stipendiali. Anticipazione ex art. 47‑bis c. 2 D.lgs. 165/2001. La voce 119 «una tantum 1,5% L. 197/2022» (marzo‑dicembre 2023) non concorre alla base.</p>
           <p><b>Retribuzione di posizione 2016‑2020</b> (annui, 13 mensilità, invariati dal 1.1.2016): A € 39.857,92 / 33.143,98 / 21.781,93; B € 15.584,45 / 7.837,59; C € 7.332,22.<br>
           <b>Dal 1.1.2021</b> (artt. 58 e 60 CCNL 16.07.2024, minimo–massimo): A 43.054,00–64.486,96 / 35.590,00–53.665,99 / 23.518,00–35.912,97; B 16.806,00–26.102,22 / 8.646,00–14.068,80; C 8.140,00–10.928,87. Massimo elevabile fino al +15% nei capoluoghi, province e città metropolitane (art. 60 c. 3).</p>
-          <p><b>Base della maggiorazione</b> — art. 63 CCNL 16.07.2024: trattamento stipendiale, RIA ove acquisita, retribuzione di posizione, maturato economico annuo. Restano fuori la 13ª mensilità (ARAN AFL4), la retribuzione di risultato, i diritti di rogito e <b>il galleggiamento</b>, che non è compreso fra le voci elencate. La maggiorazione spetta a prescindere dal numero dei comuni convenzionati.</p>
+          <p><b>Base della maggiorazione</b> — art. 63 CCNL 16.07.2024 (già art. 45 CCNL 16.05.2001): il 25% si calcola sulla <b>retribuzione mensile in godimento</b> relativa a trattamento stipendiale, RIA ove acquisita, retribuzione di posizione e maturato economico annuo. La retribuzione di posizione va assunta per intero, <b>comprensiva della maggiorazione</b> ex art. 41 c. 4 (ARAN AFL4 del 24.03.2021) e <b>del galleggiamento</b>, che per l'ARAN «non costituisce una voce a parte, essendo invece parte costitutiva della retribuzione di posizione». Restano fuori la retribuzione di risultato, i diritti di rogito e le altre voci accessorie non elencate. La maggiorazione spetta a prescindere dal numero dei comuni convenzionati.</p>
+          <p><b>Mensilità</b> — la maggiorazione è una «retribuzione mensile aggiuntiva» calcolata sulla retribuzione mensile in godimento (annuo ÷ 13). Avendo natura di <b>trattamento stipendiale</b> e non accessorio, secondo il parere <b>ARAN SEG_032</b> «nella determinazione dell'ammontare della tredicesima mensilità del segretario incaricato di segreteria convenzionata deve tenersi conto anche del rateo relativo alla retribuzione aggiuntiva»: è quindi corrisposta per <b>13 mensilità</b>. L'importo annuo coincide con il 25% della retribuzione annua in godimento delle voci di base.</p>
+          <p><b>Riparto fra gli enti convenzionati</b> — la maggiorazione è <b>unica</b>: si calcola una sola volta sulla retribuzione mensile in godimento del segretario e spetta a prescindere dal numero dei comuni convenzionati, senza moltiplicarsi per ciascun ente. L'onere complessivo del trattamento economico è ripartito fra gli enti secondo quanto stabilito dalla <b>convenzione</b> (art. 10 DPR 465/1997), di regola in proporzione al tempo di servizio prestato presso ciascuno. Se un altro ente della convenzione corrisponde già una quota della maggiorazione sul proprio cedolino, quella quota <b>si detrae</b> da quanto dovuto dall'ente per il quale si effettua il calcolo, che resta obbligato per la sola differenza. La detrazione presuppone che l'altro ente calcoli la maggiorazione sulle medesime voci di base: importi divergenti vanno riconciliati prima di essere portati in deduzione.</p>
           <p><b>Galleggiamento</b> — art. 41 c. 5 CCNL 16.05.2001, confermato dall'art. 111 c. 1 lett. b) CCNL 17.12.2020 e dall'art. 60 CCNL 2024: la posizione del segretario non può essere inferiore a quella della funzione dirigenziale più elevata dell'ente o, in assenza di dirigenti, della più elevata EQ. Massimali di prassi € 3.008,00 (A‑B) e € 1.964,00 (C).</p>
           <p><b>TFS/TFR</b> — Msg. INPS 1272/2023: per fascia A o B in enti oltre 10.000 ab. la posizione è valutabile per intero; per fascia B tra 3.000 e 10.000 ab. nei limiti dell'indennità di direzione al 30.11.1995 (€ 1.032,91 / 2.065,83 / 3.098,74).</p>
           <p><b>Avvertenza</b> — strumento di supporto: verificare con la convenzione approvata, la delibera di graduazione della posizione e le tabelle stipendiali aggiornate.</p>
@@ -401,11 +429,11 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
       <div class="body" style="padding-top:8px">
         <div class="scroll-x">
           <table class="mesi">
-            <thead><tr><th>Mese</th><th>Stipendio</th><th>IVC</th><th>Posizione</th><th>Maggiorazione</th><th>Lordo</th></tr></thead>
+            <thead id="mesi-head"></thead>
             <tbody id="mesi-body"></tbody>
           </table>
         </div>
-        <div class="hint" style="margin-top:8px"><span class="dot"></span>Riga evidenziata = mese in cui cambia l'IVC · riga in corsivo = 13ª mensilità. La colonna Posizione comprende maggiorazione e galleggiamento; la maggiorazione di convenzione è calcolata sulla base della scheda 1.</div>
+        <div class="hint" style="margin-top:8px"><span class="dot"></span>Riga evidenziata = mese in cui cambia l'IVC · riga in corsivo = 13ª mensilità. Ogni voce è esposta in colonna separata; compaiono solo quelle valorizzate. Per la stampa conviene impostare il foglio in <b>orizzontale</b>.</div>
         <div class="alerts" id="alert-mesi"></div>
         <div class="toolbar">
           <button class="btn primary" id="btn-print2">Stampa / PDF</button>
@@ -557,8 +585,13 @@ const incaricoIn=(c,f,id)=>c.pos[f].find(i=>i.id===id)||c.pos[f][0];
 const incarico=()=>incaricoIn(contratto(),$("fascia").value,$("incarico").value);
 const tabContratto=(c,f)=>(c.v[f].v50+c.v[f].v92)*MENS;
 
+let ivcSetCorrente=null;   /* set IVC attualmente caricato nel menu */
 function popolaIVC(){
-  const c=contratto(),f=$("fascia").value,sel=$("ivc-sel"),prev=sel.value;
+  const c=contratto(),f=$("fascia").value,sel=$("ivc-sel");
+  /* la selezione si conserva solo se resta la stessa tabella IVC: gli indici di riga
+     non sono confrontabili tra contratti diversi (periodi di validità differenti) */
+  const prev = (ivcSetCorrente===c.ivc) ? sel.value : null;
+  ivcSetCorrente=c.ivc;
   sel.innerHTML="";
   (IVC[c.ivc]||[]).forEach((r,i)=>{
     const per=(r.da?"dal "+dmy(r.da):"fino al "+dmy(r.a))+(r.da&&r.a?" al "+dmy(r.a):(r.da&&!r.a?" (in corso)":""));
@@ -613,8 +646,15 @@ function cfgBase(){
     posizione:val("posizione"), maggPerc:val("magg-pos"), posDir:val("pos-dir"),
     gallCap:chk("gall-cap"), capGall:CAP_GALL[f],
     bRia:chk("b-ria"), bMat:chk("b-mat"), bPos:chk("b-pos"), bMagg:chk("b-magg"), bGall:chk("b-gall"),
-    perc:val("perc"), mensErog:parseInt($("mensilita").value,10)
+    perc:val("perc"), mensErog:parseInt($("mensilita").value,10),
+    maggAltriTipo:$("magg-altri-tipo").value, maggAltri:Math.max(0,val("magg-altri"))
   };
+}
+/* quota della maggiorazione già corrisposta da altri enti della convenzione: si detrae */
+function detrazione(cfg,maggM){
+  if(!(cfg.maggAltri>0)||!(maggM>0)) return 0;
+  const d = cfg.maggAltriTipo==="pct" ? maggM*(Math.min(cfg.maggAltri,100)/100) : cfg.maggAltri;
+  return Math.min(d,maggM);
 }
 function voci(cfg){
   const posA=cfg.posizione, maggA=posA*(cfg.maggPerc/100);
@@ -642,7 +682,9 @@ function calcola(){
   const ivcM=cfg.ivcFisso;
   const tabM=cfg.tabellare/MENS;
   const baseM=baseMensile(cfg,v,ivcM), baseA=baseM*MENS;
-  const maggM=baseM*(cfg.perc/100), maggA=maggM*cfg.mensErog;
+  const maggLordaM=baseM*(cfg.perc/100), maggLordaA=maggLordaM*cfg.mensErog;
+  const detrM=detrazione(cfg,maggLordaM), detrA=detrM*cfg.mensErog;
+  const maggM=maggLordaM-detrM, maggA=maggM*cfg.mensErog;
   const fisseA=cfg.tabellare+ivcM*MENS+cfg.ria*MENS+cfg.maturato*MENS+v.posTotA;
   const totaleA=fisseA+maggA, lordoM=fisseA/MENS+maggM;
 
@@ -666,15 +708,25 @@ function calcola(){
     R("Misura del galleggiamento"+(v.gallCapped?" (massimale)":""),"V.107",v.gallA,v.gallA/MENS,cfg.bGall?"":"excl");
   }
   R("Totale retribuzione di posizione","",v.posTotA,v.posTotA/MENS,"sub");
-  R("Base di calcolo della maggiorazione","art. 63 · esclusa 13ª"+(cfg.bGall?"":" e galleggiamento"),baseA,baseM,"sub");
-  R("Maggiorazione segreteria convenzionata "+num(cfg.perc)+"%","V.79 · "+cfg.mensErog+" mensilità",maggA,maggM,"hl");
+  R("Base di calcolo della maggiorazione","art. 63 · retribuzione mensile in godimento"+(cfg.bGall?"":" · escluso galleggiamento"),baseA,baseM,"sub");
+  if(detrM>0){
+    R("Maggiorazione segreteria convenzionata "+num(cfg.perc)+"%","art. 63 · maggiorazione unica",maggLordaA,maggLordaM,"sub");
+    R("Quota già corrisposta da altri enti",
+      cfg.maggAltriTipo==="pct"?("riparto convenzione · "+num(Math.min(cfg.maggAltri,100))+"%"):"importo comunicato dall'ente convenzionato",
+      -detrA,-detrM,"detr");
+    R("Maggiorazione a carico dell'ente","V.79 · "+cfg.mensErog+" mensilità",maggA,maggM,"hl");
+  }else{
+    R("Maggiorazione segreteria convenzionata "+num(cfg.perc)+"%","V.79 · "+cfg.mensErog+" mensilità",maggA,maggM,"hl");
+  }
   R("TOTALE","",totaleA,lordoM,"tot");
 
   $("foglio-body").innerHTML=rows.map(r=>
     '<tr class="'+r.cls+'"><td>'+r.voce+'</td><td>'+r.rif+'</td><td>'+eur(r.a)+'</td><td>'+eur(r.m)+'</td></tr>').join("");
 
+  $("kpi-magg-lab").textContent=detrM>0?"Maggiorazione a carico dell'ente":"Maggiorazione convenzione";
   $("kpi-magg").textContent=eur(maggM);
-  $("kpi-magg-sub").textContent="voce 79 · "+eur(maggA)+" annui su "+cfg.mensErog+" mensilità";
+  $("kpi-magg-sub").textContent="voce 79 · "+eur(maggA)+" annui su "+cfg.mensErog+" mensilità"+
+    (detrM>0?" · al netto di "+eur(detrM)+"/mese a carico di altri enti":"");
   $("kpi-lordo").textContent=eur(lordoM);
   $("kpi-lordo-sub").textContent=eur(totaleA)+" annui";
 
@@ -683,7 +735,7 @@ function calcola(){
     ...(vv.v92>0?[["V.92 Posizione conglobata",vv.v92]]:[]),
     ["V.53 IVC", ivcM],
     ["V.60 Retribuzione di posizione (incl. magg. e gall.)", v.posTotA/MENS],
-    ["V.79 Indennità di convenzione", maggM]
+    ["V.79 Indennità di convenzione"+(detrM>0?" (al netto della quota altri enti)":""), maggM]
   ];
   $("ced-body").innerHTML=ced.map((x,k)=>
     '<tr class="'+(k===ced.length-1?"hl":"")+'"><td colspan="2">'+x[0]+'</td><td colspan="2">'+eur(x[1])+' / mese</td></tr>').join("")+
@@ -699,10 +751,18 @@ function calcola(){
     if(Math.abs(cfg.posizione-i.min)>0.01){ac.push(["warn","Nel regime 2016‑2020 la classe «"+i.label+"» valeva "+eur(i.min)+": lo scostamento va giustificato da maggiorazione, galleggiamento o CCNI territoriale."]);$("pos-flag").innerHTML='<span class="pill warn">valore modificato</span>';}
     else $("pos-flag").innerHTML='<span class="pill ok">valore contrattuale</span>';
   }
-  if(cfg.bGall&&v.gallA>0) ac.push(["warn","Il <b>galleggiamento è incluso</b> nella base della maggiorazione (opzione avanzata attiva): non rientra fra le voci elencate dall'art. 63."]);
+  if(!cfg.bGall&&v.gallA>0) ac.push(["warn","Il <b>galleggiamento è escluso</b> dalla base (opzione avanzata): per l'ARAN è invece parte costitutiva della retribuzione di posizione richiamata dall'art. 63 lett. c) e va computato. Differenza sulla maggiorazione: "+eur(v.gallA/MENS*(cfg.perc/100))+"/mese."]);
   if(v.gallCapped) ac.push(["warn","Galleggiamento ridotto al massimale di "+eur(cfg.capGall)+" (fascia "+f+")."]);
   if(cfg.posDir>0&&v.gallA===0) ac.push(["ok","Nessun galleggiamento dovuto: la posizione ("+eur(v.posA+v.maggA)+") non è inferiore a quella dirigenziale/EQ più elevata."]);
-  if(cfg.mensErog===13) ac.push(["warn","Maggiorazione corrisposta anche sulla 13ª: difforme dall'orientamento ARAN AFL4."]);
+  if(detrM>0){
+    ac.push(["ok","Maggiorazione unica di "+eur(maggLordaM)+"/mese ("+eur(maggLordaA)+" annui): dedotta la quota di "+eur(detrM)+"/mese già corrisposta dagli altri enti convenzionati, a carico di questo ente restano <b>"+eur(maggM)+"/mese</b> ("+eur(maggA)+" annui). Verificare la corrispondenza con il riparto degli oneri stabilito dalla convenzione."]);
+    if(cfg.maggAltriTipo==="imp"&&cfg.maggAltri>maggLordaM+0.005)
+      ac.push(["err","L'importo indicato ("+eur(cfg.maggAltri)+"/mese) <b>supera la maggiorazione spettante</b> ("+eur(maggLordaM)+"/mese): la detrazione è stata limitata a quest'ultima e la voce 79 risulta azzerata. Verificare le basi di calcolo usate dall'altro ente."]);
+    if(cfg.maggAltriTipo==="pct"&&cfg.maggAltri>100)
+      ac.push(["err","La quota a carico degli altri enti è stata limitata al <b>100%</b>."]);
+  }
+  if(cfg.mensErog===12) ac.push(["warn","Maggiorazione corrisposta su <b>12 mensilità</b>: per l'ARAN (parere SEG_032) è trattamento stipendiale e va computata anche nella 13ª. Differenza annua: "+eur(maggM)+"."]);
+  if(!cfg.bMagg&&v.maggA>0) ac.push(["warn","La <b>maggiorazione della posizione è esclusa</b> dalla base: difforme dall'orientamento ARAN AFL4 del 24.03.2021, che la include."]);
   if($("contratto").value==="c2022"&&f==="B") ac.push(["warn","Fascia B nel CCNL 2022‑2024: le tabelle allineano la voce 50 alla fascia A e mantengono la voce 92 di € 231,38. Verificare se la conglobata sia ancora dovuta."]);
   $("alert-calc").innerHTML=ac.map(a=>'<div class="note '+a[0]+'">'+a[1]+'</div>').join("");
 
@@ -723,50 +783,84 @@ function classePerPop(c,pop){
 }
 
 /* ---------- pagina 2 ---------- */
-function sviluppo(cfg,setIVC,auto){
+function sviluppo(cfg,setIVC,auto,vv){
   const v=voci(cfg), mesi=elencoMesi($("dal").value,$("al").value);
   const tabM=cfg.tabellare/MENS, posTotM=v.posTotA/MENS;
+  /* scomposizione del trattamento stipendiale: V.50 e V.92 (posizione conglobata, fascia B) */
+  const congl = (vv && vv.v92>0 && Math.abs(cfg.tabellare-(vv.v50+vv.v92)*MENS)<0.01) ? vv.v92 : 0;
+  const v50M=tabM-congl, posM=v.posA/MENS, maggPosM=v.maggA/MENS, gallM=v.gallA/MENS;
+
+  const riga=(ym,ivcM,mgL,dt,tred)=>({ym,tred,ivcM,tabM,posTotM,maggLordaM:mgL,detrM:-dt,maggM:mgL-dt,
+    v50M, v92M:congl, riaM:cfg.ria, matM:cfg.maturato, posM, maggPosM, gallM,
+    lordoM: tabM+ivcM+cfg.ria+cfg.maturato+posTotM+(mgL-dt)});
+
   const righe=[];
   mesi.forEach(ym=>{
     const ivcM = auto ? ((rigaIVC(setIVC,ym+"-01",cfg.fascia)||{imp:0}).imp) : cfg.ivcFisso;
-    const bM=baseMensile(cfg,v,ivcM), mg=bM*(cfg.perc/100);
-    righe.push({ym,tabM,ivcM,posTotM,baseM:bM,maggM:mg,lordoM:tabM+ivcM+cfg.ria+cfg.maturato+posTotM+mg,tred:false});
-    if(ym.endsWith("-12")){
-      const mg13=cfg.mensErog===13?mg:0;
-      righe.push({ym,tabM,ivcM,posTotM,baseM:bM,maggM:mg13,lordoM:tabM+ivcM+cfg.ria+cfg.maturato+posTotM+mg13,tred:true});
-    }
+    const mgL=baseMensile(cfg,v,ivcM)*(cfg.perc/100), dt=detrazione(cfg,mgL);
+    righe.push(riga(ym,ivcM,mgL,dt,false));
+    if(ym.endsWith("-12")) righe.push(riga(ym,ivcM,cfg.mensErog===13?mgL:0,cfg.mensErog===13?dt:0,true));
   });
   const s=k=>righe.reduce((a,r)=>a+r[k],0);
-  return {mesi,righe,v,tot:{tab:s("tabM"),ivc:s("ivcM"),pos:s("posTotM"),magg:s("maggM"),lordo:s("lordoM")},
-          nMesi:mesi.length,nTred:righe.filter(r=>r.tred).length};
+  return {mesi,righe,v,congl,perc:cfg.perc,
+    tot:{tab:s("tabM"),ivc:s("ivcM"),pos:s("posTotM"),magg:s("maggM"),lordo:s("lordoM"),
+         maggLorda:s("maggLordaM"),detr:s("detrM"),
+         v50:s("v50M"),v92:s("v92M"),ria:s("riaM"),mat:s("matM"),
+         posBase:s("posM"),maggPos:s("maggPosM"),gall:s("gallM")},
+    nMesi:mesi.length,nTred:righe.filter(r=>r.tred).length};
+}
+/* colonne dello sviluppo mensile: solo quelle effettivamente valorizzate */
+function colonneMesi(r){
+  const col=[{k:"v50M",t:"V.50 Stipendio",tot:"v50"}];
+  if(r.congl>0)          col.push({k:"v92M",t:"V.92 Conglobata",tot:"v92"});
+  col.push({k:"ivcM",t:"V.53 IVC",tot:"ivc"});
+  if(r.tot.ria)          col.push({k:"riaM",t:"RIA",tot:"ria"});
+  if(r.tot.mat)          col.push({k:"matM",t:"Maturato",tot:"mat"});
+  col.push({k:"posM",t:"V.60 Posizione",tot:"posBase"});
+  if(r.tot.maggPos)      col.push({k:"maggPosM",t:"Magg. posizione",tot:"maggPos"});
+  if(r.tot.gall)         col.push({k:"gallM",t:"V.107 Galleggiam.",tot:"gall"});
+  if(r.tot.detr){
+    col.push({k:"maggLordaM",t:"Magg. "+num(r.perc)+"% unica",tot:"maggLorda"});
+    col.push({k:"detrM",t:"Quota altri enti",tot:"detr"});
+    col.push({k:"maggM",t:"V.79 A carico ente",tot:"magg"});
+  }else col.push({k:"maggM",t:"V.79 Maggiorazione",tot:"magg"});
+  col.push({k:"lordoM",t:"Lordo",tot:"lordo"});
+  return col;
 }
 function calcolaPeriodo(){
   const c=contratto(),f=$("fascia").value,cfg=cfgBase(),auto=chk("ivc-auto");
-  const r=sviluppo(cfg,c.ivc,auto);
+  const r=sviluppo(cfg,c.ivc,auto,c.v[f]);
   const av=[];
   if(!r.mesi.length){
-    $("mesi-body").innerHTML="";
+    $("mesi-head").innerHTML=""; $("mesi-body").innerHTML=""; $("cmp-body").innerHTML="";
+    $("h-periodo").textContent="";
+    ["kpi-magg-p","kpi-lordo-p"].forEach(k=>$(k).textContent="—");
+    ["kpi-magg-p-sub","kpi-lordo-p-sub"].forEach(k=>$(k).textContent="");
+    ultimo2=null;
     $("alert-mesi").innerHTML='<div class="note err">Periodo non valido: la data <b>al</b> deve essere successiva o uguale a <b>dal</b>.</div>';
     return;
   }
+  if(r.mesi.length>=180) av.push(["warn","Periodo troppo esteso: lo sviluppo è stato troncato a 180 mesi."]);
   $("h-periodo").textContent="· "+meseLabel(r.mesi[0])+(r.mesi.length>1?" → "+meseLabel(r.mesi[r.mesi.length-1]):"")+
     " ("+r.nMesi+(r.nMesi===1?" mese":" mesi")+(r.nTred?" + "+r.nTred+" tredicesima"+(r.nTred>1?"e":""):"")+")";
 
+  const col=colonneMesi(r);
+  $("mesi-head").innerHTML='<tr><th>Mese</th>'+col.map(x=>'<th>'+x.t+'</th>').join("")+'</tr>';
   let prev=null;
   $("mesi-body").innerHTML=r.righe.map(m=>{
     const camb=!m.tred&&prev!==null&&Math.abs(m.ivcM-prev)>0.005;
     if(!m.tred) prev=m.ivcM;
     return '<tr class="'+(m.tred?"tred":(camb?"var":""))+'"><td>'+(camb?'<span class="dot"></span>':'')+
-      (m.tred?"13ª mensilità "+m.ym.split("-")[0]:meseLabel(m.ym))+'</td><td>'+eur(m.tabM)+'</td><td>'+eur(m.ivcM)+
-      '</td><td>'+eur(m.posTotM)+'</td><td>'+eur(m.maggM)+'</td><td>'+eur(m.lordoM)+'</td></tr>';
+      (m.tred?"13ª mensilità "+m.ym.split("-")[0]:meseLabel(m.ym))+'</td>'+
+      col.map(x=>'<td>'+eur(m[x.k])+'</td>').join("")+'</tr>';
   }).join("")+
-  '<tr class="tot"><td>Totale periodo</td><td>'+eur(r.tot.tab)+'</td><td>'+eur(r.tot.ivc)+'</td><td>'+eur(r.tot.pos)+
-  '</td><td>'+eur(r.tot.magg)+'</td><td>'+eur(r.tot.lordo)+'</td></tr>';
+  '<tr class="tot"><td>Totale periodo</td>'+col.map(x=>'<td>'+eur(r.tot[x.tot])+'</td>').join("")+'</tr>';
 
   const mm=r.righe.filter(x=>!x.tred).map(x=>x.maggM);
   const mn=Math.min(...mm),mx=Math.max(...mm);
   $("kpi-magg-p").textContent=eur(r.tot.magg);
-  $("kpi-magg-p-sub").textContent=Math.abs(mx-mn)<0.005?("costante "+eur(mx)+"/mese"):("da "+eur(mn)+" a "+eur(mx)+"/mese");
+  $("kpi-magg-p-sub").textContent=(Math.abs(mx-mn)<0.005?("costante "+eur(mx)+"/mese"):("da "+eur(mn)+" a "+eur(mx)+"/mese"))+
+    (r.tot.detr?" · al netto di "+eur(-r.tot.detr)+" a carico di altri enti":"");
   $("kpi-lordo-p").textContent=eur(r.tot.lordo);
   $("kpi-lordo-p-sub").textContent=r.nMesi+" mensilità"+(r.nTred?" + "+r.nTred+" tredicesima"+(r.nTred>1?"e":""):"");
 
@@ -792,18 +886,20 @@ function calcolaPeriodo(){
   const cB=CONTRATTI[$("contratto-b").value], iB=incaricoIn(cB,f,$("incarico").value);
   const cfgB={...cfg,tabellare:tabContratto(cB,f)};
   if(chk("cmp-pos")) cfgB.posizione=iB.min;
-  const rB=sviluppo(cfgB,chk("cmp-ivc")?cB.ivc:c.ivc,auto);
+  const rB=sviluppo(cfgB,chk("cmp-ivc")?cB.ivc:c.ivc,auto,cB.v[f]);
   $("cmp-h-a").textContent=c.label.split("—")[0].trim();
   $("cmp-h-b").textContent=cB.label.split("—")[0].trim();
   const righe=[["Stipendio tabellare",r.tot.tab,rB.tot.tab],["IVC",r.tot.ivc,rB.tot.ivc],
-    ["Retribuzione di posizione",r.tot.pos,rB.tot.pos],["Maggiorazione convenzione",r.tot.magg,rB.tot.magg],
+    ["Retribuzione di posizione",r.tot.pos,rB.tot.pos],
+    ["Maggiorazione convenzione"+(r.tot.detr?" (a carico ente)":""),r.tot.magg,rB.tot.magg],
     ["TOTALE LORDO",r.tot.lordo,rB.tot.lordo]];
   $("cmp-body").innerHTML=righe.map((x,k)=>{
     const d=x[1]-x[2],cls=Math.abs(d)<0.005?"":(d>0?"pos":"neg"),sg=d>0?"+":"";
     return '<tr class="'+(k===4?"tot":"")+'"><td>'+x[0]+'</td><td>'+eur(x[1])+'</td><td>'+eur(x[2])+'</td><td class="'+cls+'">'+sg+eur(d)+'</td></tr>';
   }).join("");
 
-  ultimo2={righe:r.righe,tot:r.tot,dal:r.mesi[0],al:r.mesi[r.mesi.length-1]};
+  ultimo2={righe:r.righe,tot:r.tot,col,dal:r.mesi[0],al:r.mesi[r.mesi.length-1],
+           contratto:c.label,fascia:"Fascia "+f,classe:incarico().label};
 }
 
 /* ===================== EXPORT ===================== */
@@ -821,9 +917,13 @@ function csv1(){
 }
 function csv2(){
   if(!ultimo2) return;
-  let o="Sviluppo mensile;"+ultimo2.dal+" - "+ultimo2.al+"\r\nMese;Stipendio;IVC;Posizione;Maggiorazione;Lordo\r\n";
-  ultimo2.righe.forEach(m=>{o+=(m.tred?"13a "+m.ym.split("-")[0]:m.ym)+";"+num(m.tabM)+";"+num(m.ivcM)+";"+num(m.posTotM)+";"+num(m.maggM)+";"+num(m.lordoM)+"\r\n";});
-  o+="TOTALE;"+num(ultimo2.tot.tab)+";"+num(ultimo2.tot.ivc)+";"+num(ultimo2.tot.pos)+";"+num(ultimo2.tot.magg)+";"+num(ultimo2.tot.lordo)+"\r\n";
+  const col=ultimo2.col;
+  let o="Sviluppo mensile;"+ultimo2.dal+" - "+ultimo2.al+"\r\n"+ultimo2.contratto+"\r\n"+ultimo2.fascia+";"+ultimo2.classe+"\r\n\r\n";
+  o+="Mese;"+col.map(c=>c.t).join(";")+"\r\n";
+  ultimo2.righe.forEach(m=>{
+    o+=(m.tred?"13a mensilita "+m.ym.split("-")[0]:m.ym)+";"+col.map(c=>num(m[c.k])).join(";")+"\r\n";
+  });
+  o+="TOTALE;"+col.map(c=>num(ultimo2.tot[c.tot])).join(";")+"\r\n";
   scarica("sviluppo_mensile_segretario.csv",o);
 }
 function copia(){
@@ -849,7 +949,17 @@ function applicaTabellareHint(){
   const c=contratto(),f=$("fascia").value,v=c.v[f];
   $("tabellare-split").innerHTML=(v.v92>0?"Tabelle: <b>V.50</b> "+eur(v.v50)+" + <b>V.92</b> "+eur(v.v92):"Tabelle: <b>V.50</b> "+eur(v.v50))+" · mensile "+eur(val("tabellare")/MENS);
 }
-["ria","maturato","magg-pos","pos-dir","perc"].forEach(id=>$(id).addEventListener("input",calcola));
+["ria","maturato","magg-pos","pos-dir","perc","magg-altri"].forEach(id=>$(id).addEventListener("input",calcola));
+function aggiornaMaggAltri(){
+  const pct=$("magg-altri-tipo").value==="pct";
+  $("magg-altri-um").textContent=pct?"(% della maggiorazione)":"(€/mese)";
+  $("magg-altri").step=pct?"0.5":"0.01";
+  $("magg-altri").max=pct?"100":"";
+  $("magg-altri-hint").textContent=pct
+    ? "Quota dell'onere posta dalla convenzione a carico degli altri enti. 0 = nessuna detrazione"
+    : "Importo mensile della voce 79 già erogata dall'altro ente. 0 = nessuna detrazione";
+}
+$("magg-altri-tipo").addEventListener("change",()=>{aggiornaMaggAltri();calcola();});
 ["b-ria","b-mat","b-pos","b-magg","b-gall","gall-cap","mensilita"].forEach(id=>$(id).addEventListener("change",()=>{aggiornaPosizione(false);calcola();}));
 $("incr15").addEventListener("change",()=>{aggiornaPosizione(false);calcola();});
 ["dal","al","ivc-auto","cmp-pos","cmp-ivc","contratto-b"].forEach(id=>$(id).addEventListener("change",calcolaPeriodo));
@@ -888,6 +998,7 @@ popolaIVC();
 applicaTabellare();
 aggiornaPosizione(true);
 $("pos-dir").value="13499.98";
+aggiornaMaggAltri();
 renderEnti();
 calcola();
 </script>
