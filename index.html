@@ -51,6 +51,8 @@ select.big{font-weight:650;color:var(--brand-dark);background:#fbfdfd}
 .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
 .btn.primary:hover{background:var(--brand-dark)}
 .btn.sm{padding:4px 9px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:disabled:hover{background:#fff;border-color:var(--line)}
 .btn.danger{color:var(--err);border-color:#e7c9c9}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 /* prospetto stile foglio */
@@ -69,14 +71,32 @@ table.foglio tr.detr td{color:var(--err)}
 table.foglio tr.detr td:first-child::after{content:"a dedurre";display:inline-block;margin-left:8px;padding:1px 6px;border-radius:4px;background:var(--err-soft);color:var(--err);font-size:10px;font-weight:700;letter-spacing:.2px;vertical-align:1px}
 table.enti th,table.enti td{padding:6px;font-size:13px;border-bottom:1px solid var(--line);text-align:left}
 table.enti th{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--ink-soft)}
-table.mesi{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;min-width:600px}
-table.mesi th{font-size:10.5px;text-transform:uppercase;letter-spacing:.3px;color:var(--ink-soft);text-align:right;padding:7px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
-table.mesi th:first-child{text-align:left}
-table.mesi td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-table.mesi td:first-child{text-align:left}
-table.mesi tr.var td{background:#fffaf0}
-table.mesi tr.tred td{background:#f4f8f9;font-style:italic}
-table.mesi tr.tot td{font-weight:700;background:var(--brand-soft);border-top:2px solid var(--brand);border-bottom:2px solid var(--brand)}
+/* prospetto differenze (pagina 2): una riga per mese e voce */
+.pro-scroll{max-height:72vh;overflow:auto;border:1px solid var(--line);border-radius:7px}
+table.pro{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;font-variant-numeric:tabular-nums}
+table.pro th{position:sticky;top:0;z-index:1;background:#fff;font-size:10.5px;text-transform:uppercase;letter-spacing:.3px;color:var(--ink-soft);text-align:right;padding:7px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
+table.pro th:first-child{text-align:left}
+table.pro td{padding:3px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.pro td:first-child{text-align:left}
+table.pro tr.head td{background:#f1f6f8;font-weight:700}
+table.pro tr.head.tred td:first-child{font-style:italic}
+table.pro tr.head.sub td{background:var(--brand-soft);color:var(--brand-dark);border-top:2px solid var(--brand)}
+table.pro tr.head.grp td{background:var(--accent-soft);color:#6b4c00;border-top:2px solid var(--accent)}
+table.pro tr.head.tot td{background:var(--brand);color:#fff;border-top:2px solid var(--brand-dark)}
+table.pro tr.voce td:first-child{padding-left:22px;color:var(--ink-soft);font-size:12px}
+table.pro tr.extra td{font-weight:650}
+table.pro tr.extra.detr td{color:var(--err)}
+table.pro tr.extra.hl td{background:var(--accent-soft);color:#6b4c00;font-weight:700}
+table.pro td.pos{color:var(--ok)}
+table.pro td.neg{color:var(--err)}
+table.pro tr.head.tot td.pos,table.pro tr.head.tot td.neg{color:#fff}
+table.pro input.cella{width:96px;padding:2px 6px;font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums;border-radius:5px;-moz-appearance:textfield;appearance:textfield}
+table.pro input.cella::-webkit-outer-spin-button,table.pro input.cella::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+table.pro tr.mod input.cella{background:var(--accent-soft);border-color:#d9b862;font-weight:700;color:#6b4c00}
+table.pro .az{display:none;margin-right:6px;gap:4px;vertical-align:middle}
+table.pro tr.mod .az{display:inline-flex}
+table.pro .az button{border:1px solid var(--line);background:#fff;border-radius:5px;font-family:inherit;font-size:11px;padding:1px 6px;cursor:pointer;color:var(--ink)}
+table.pro .az button:hover{border-color:var(--brand);background:var(--brand-soft)}
 table.cmp{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 table.cmp th{font-size:10.5px;text-transform:uppercase;color:var(--ink-soft);text-align:right;padding:7px 8px;border-bottom:2px solid var(--line)}
 table.cmp th:first-child{text-align:left}
@@ -116,19 +136,33 @@ table.mini tr.now td{background:var(--accent-soft);font-weight:700;color:#6b4c00
 .range-wrap{display:flex;align-items:center;gap:10px}
 .range-wrap input[type=range]{flex:1;accent-color:var(--brand)}
 .minmax{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-soft);margin-top:3px;font-variant-numeric:tabular-nums}
+/* barra pratica */
+.pratica{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px 14px;margin-bottom:18px}
+.pratica .nome{flex:1 1 240px;min-width:200px}
+.pratica .nome input{padding:6px 10px}
+.pratica .azioni,.bozza .azioni{display:flex;gap:8px;flex-wrap:wrap}
+.pratica-msg:empty{display:none}
+.pratica-msg .note{margin:0 0 12px}
+.pratica-msg ul{margin:4px 0 0;padding-left:18px}
+.bozza{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 12px}
+.bozza[hidden]{display:none}
 footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color:var(--ink-soft)}
 @media print{
   body{background:#fff;font-size:11px}
   header.top{background:#fff;color:#000;border-bottom:2px solid #000;padding:0 0 6px}
-  .tabs,.toolbar,.btn{display:none!important}
+  .tabs,.toolbar,.btn,.pratica,.pratica-msg,.bozza{display:none!important}
   main{padding:0;max-width:none}
   .cols{display:block}
   .card{box-shadow:none;break-inside:avoid;page-break-inside:avoid;margin-bottom:10px}
   .card>h2{background:#eee!important;color:#000}
   details.legal{display:none}
   .scroll-x{overflow:visible}
-  table.mesi{min-width:0;font-size:8.5px}
-  table.mesi th,table.mesi td{padding:3px 4px}
+  .pro-scroll{max-height:none;overflow:visible;border:0}
+  table.pro{font-size:9px}
+  table.pro th{position:static}
+  table.pro th,table.pro td{padding:2px 4px}
+  table.pro input.cella{border:0;background:none;padding:0;width:auto;font-size:9px}
+  table.pro .az,#pro-info{display:none!important}
 }
 </style>
 </head>
@@ -146,6 +180,24 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
 </header>
 
 <main>
+
+<!-- ================= PRATICA ================= -->
+<div class="pratica">
+  <div class="nome">
+    <label for="pratica-nome">Pratica</label>
+    <input type="text" id="pratica-nome" maxlength="200" placeholder="Nome della pratica (senza dati personali)" autocomplete="off">
+  </div>
+  <div class="azioni">
+    <button class="btn primary" id="btn-salva-pratica" type="button">Salva pratica</button>
+    <button class="btn" id="btn-apri-pratica" type="button">Apri pratica</button>
+    <input type="file" id="file-pratica" accept=".json,application/json" hidden>
+  </div>
+</div>
+<div class="pratica-msg" id="pratica-msg" role="status" aria-live="polite"></div>
+<div class="note warn bozza" id="bozza" hidden>
+  <span id="bozza-testo"></span>
+  <span class="azioni"><button class="btn sm primary" id="bozza-ripristina" type="button">Ripristina bozza</button><button class="btn sm" id="bozza-scarta" type="button">Scarta</button></span>
+</div>
 
 <!-- ================= PAGINA 1 ================= -->
 <div class="page" id="page-1" role="tabpanel">
@@ -298,7 +350,7 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
           <div class="row-flag"><input type="checkbox" id="gall-cap">
             <span><b>Massimale al galleggiamento</b><em>€ 3.008,00 fasce A‑B — € 1.964,00 fascia C</em></span></div>
           <div class="row-flag"><input type="checkbox" id="incr15">
-            <span><b>Massimo di posizione +15% (art. 60 c. 3)</b><em>Solo capoluoghi, province e città metropolitane con strutture complesse</em></span></div>
+            <span><b>Massimo di posizione maggiorato</b><em>+15% capoluoghi e province con strutture complesse; +20% enti metropolitani (dal 2024)</em></span></div>
         </div>
       </details>
     </section>
@@ -343,7 +395,7 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
       <details class="legal">
         <summary>Valori tabellari e riferimenti normativi</summary>
         <div class="body">
-          <p><b>Stipendio tabellare mensile (voce 50, 13 mensilità)</b> — dalle tabelle stipendiali dell'ente: CCNL 2016‑2018 → A € 3.481,60 · B € 3.250,22 + € 231,38 (voce 92, posizione conglobata) · C € 2.785,28; CCNL 2019‑2021 → A € 3.616,60 · B € 3.385,22 + 231,38 · C € 2.893,28; CCNL 2022‑2024 → A € 3.846,60 · B € 3.846,60 + 231,38 · C € 3.077,28. Riscontro: art. 57 CCNL 16.07.2024 (incrementi 80 → 124 → 135 € per A‑B e 64 → 99 → 108 € per C su base € 45.260,77; valore a regime € 47.015,77, fascia C € 37.612,59).</p>
+          <p><b>Stipendio tabellare mensile (voce 50, 13 mensilità)</b> — dalle tabelle stipendiali dell'ente: CCNL 2016‑2018 → A € 3.481,60 · B € 3.250,22 + € 231,38 (voce 92, posizione conglobata) · C € 2.785,28; CCNL 2019‑2021 → A € 3.616,60 · B € 3.385,22 + 231,38 · C € 2.893,28; CCNL 2022‑2024 → A € 3.846,60 · B € 3.615,22 + 231,38 · C € 3.077,28. Riscontro: art. 57 CCNL 16.07.2024 (incrementi 80 → 124 → 135 € per A‑B e 64 → 99 → 108 € per C su base € 45.260,77; valore a regime € 47.015,77, fascia C € 37.612,59).</p>
           <p><b>IVC (voce 53)</b> — importi mensili per fascia e decorrenza dalle tabelle stipendiali. Anticipazione ex art. 47‑bis c. 2 D.lgs. 165/2001. La voce 119 «una tantum 1,5% L. 197/2022» (marzo‑dicembre 2023) non concorre alla base.</p>
           <p><b>Retribuzione di posizione 2016‑2020</b> (annui, 13 mensilità, invariati dal 1.1.2016): A € 39.857,92 / 33.143,98 / 21.781,93; B € 15.584,45 / 7.837,59; C € 7.332,22.<br>
           <b>Dal 1.1.2021</b> (artt. 58 e 60 CCNL 16.07.2024, minimo–massimo): A 43.054,00–64.486,96 / 35.590,00–53.665,99 / 23.518,00–35.912,97; B 16.806,00–26.102,22 / 8.646,00–14.068,80; C 8.140,00–10.928,87. Massimo elevabile fino al +15% nei capoluoghi, province e città metropolitane (art. 60 c. 3).</p>
@@ -378,11 +430,11 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
           <button class="btn sm" data-preset="12m">Ultimi 12 mesi</button>
           <button class="btn sm" data-preset="mese">Mese corrente</button>
         </div>
-        <div class="note">Il calcolo usa l'inquadramento della scheda 1 (CCNL, fascia, classe, posizione e voci) e applica a ogni mese <b>l'IVC in vigore in quella data</b>. La 13ª è aggiunta a dicembre, se compreso nel periodo.</div>
-        <div class="row-flag" style="margin-top:10px">
-          <input type="checkbox" id="ivc-auto" checked>
-          <span><b>IVC automatica per decorrenza</b>
-            <em>Se disattivata viene usato per tutti i mesi l'importo IVC impostato nella scheda 1.</em></span>
+        <div class="note">Usa fascia, classe e voci della scheda 1; la posizione indicata è quella <b>in godimento prima dei rinnovi</b>. Il dovuto applica a ogni mese il contratto in vigore per decorrenza; la 13ª è calcolata a ratei ed esposta a dicembre o nell'ultimo mese.</div>
+        <div style="margin-top:12px">
+          <label for="emolumento">Emolumento di dicembre 2023 (importo totale)</label>
+          <input type="number" id="emolumento" value="0" step="0.01" min="0">
+          <div class="hint">Facoltativo: se l'ente l'ha pagato, si deduce dalle differenze 2024.</div>
         </div>
         <div id="ivc-tab-wrap"></div>
         <div class="alerts" id="alert-ivc"></div>
@@ -390,30 +442,22 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
     </section>
 
     <section class="card">
-      <h2>Comparazione con un altro CCNL</h2>
+      <h2>Dovuto e percepito</h2>
       <div class="body">
-        <label for="contratto-b">CCNL di raffronto</label>
-        <select id="contratto-b" class="big"></select>
-        <div class="row-flag" style="margin-top:8px">
-          <input type="checkbox" id="cmp-pos" checked>
-          <span><b>Adegua anche la retribuzione di posizione</b><em>Valore contrattuale della stessa classe nel CCNL di raffronto</em></span>
-        </div>
-        <div class="row-flag">
-          <input type="checkbox" id="cmp-ivc" checked>
-          <span><b>Adegua anche l'IVC</b><em>Tabella IVC di quel contratto, sugli stessi mesi</em></span>
-        </div>
+        <label for="regime-perc">Regime del percepito</label>
+        <select id="regime-perc" class="big"></select>
+        <div class="hint">Quanto pagava l'ente: per default il contratto precedente a ogni rinnovo, più l'IVC del mese. Cambiando regime le celle non modificate a mano si aggiornano.</div>
         <table class="cmp" style="margin-top:10px">
-          <thead><tr><th>Totali del periodo</th><th id="cmp-h-a">Attuale</th><th id="cmp-h-b">Raffronto</th><th>Δ</th></tr></thead>
+          <thead><tr><th>Totali del periodo</th><th>Dovuto</th><th>Percepito</th><th>Differenza</th></tr></thead>
           <tbody id="cmp-body"></tbody>
         </table>
-        <div class="hint" style="margin-top:8px">Il Δ del totale lordo è la misura degli arretrati in caso di applicazione del contratto di raffronto.</div>
       </div>
     </section>
   </div>
 
   <div>
     <section class="card">
-      <h2>Sviluppo mensile <span id="h-periodo" style="font-weight:600;text-transform:none;letter-spacing:0"></span></h2>
+      <h2>Prospetto differenze <span id="h-periodo" style="font-weight:600;text-transform:none;letter-spacing:0"></span></h2>
       <div class="kpis">
         <div class="kpi gold">
           <div class="lab">Maggiorazione del periodo</div>
@@ -427,17 +471,19 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
         </div>
       </div>
       <div class="body" style="padding-top:8px">
-        <div class="scroll-x">
-          <table class="mesi">
-            <thead id="mesi-head"></thead>
-            <tbody id="mesi-body"></tbody>
+        <div class="hint" id="pro-info" style="margin:0 0 8px"></div>
+        <div class="pro-scroll">
+          <table class="pro">
+            <thead><tr><th>Mese / voce</th><th>Dovuto €</th><th>Percepito €</th><th>Differenza €</th></tr></thead>
+            <tbody id="pro-body"></tbody>
           </table>
         </div>
-        <div class="hint" style="margin-top:8px"><span class="dot"></span>Riga evidenziata = mese in cui cambia l'IVC · riga in corsivo = 13ª mensilità. Ogni voce è esposta in colonna separata; compaiono solo quelle valorizzate. Per la stampa conviene impostare il foglio in <b>orizzontale</b>.</div>
+        <div class="hint" style="margin-top:8px"><span class="dot"></span>Per ogni mese: dovuto, percepito e differenza di ogni voce valorizzata; riga in corsivo = 13ª a ratei (si ricalcola dai mesi). Il <b>percepito</b> è precalcolato e ogni cella si può correggere dove il cedolino reale diverge: la cella modificata è evidenziata, <b>↓ propaga</b> copia il valore sui mesi successivi, <b>↺ ripristina</b> torna al calcolato. La maggiorazione modificata a mano non si ricalcola; se cambia la base, quella non toccata sì. Le modifiche restano finché non cambi fascia, classe o periodo. Per la stampa conviene impostare il foglio in <b>orizzontale</b>.</div>
         <div class="alerts" id="alert-mesi"></div>
         <div class="toolbar">
           <button class="btn primary" id="btn-print2">Stampa / PDF</button>
           <button class="btn" id="btn-csv2">Esporta CSV</button>
+          <button class="btn" id="btn-rip-tutto">Ripristina tutto il calcolato</button>
         </div>
       </div>
     </section>
@@ -452,25 +498,36 @@ footer{max-width:1320px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color
   Modulo di calcolo per la gestione del personale — segretario comunale in convenzione · elaborazione locale, nessun dato trasmesso · valori tabellari modificabili.
 </footer>
 
-<script>
+<script id="motore">
 "use strict";
+/* Motore di calcolo: tabelle contrattuali e funzioni pure, senza DOM.
+   I test (test/motore.test.mjs) eseguono questo blocco con node. */
 
 /* ===================== TABELLE ===================== */
 const POS_2016 = {
-  A:[{id:"A1",label:"Enti metropolitani",min:39857.92,max:39857.92,popMin:250001,popMax:Infinity,plus15:false},
-     {id:"A2",label:"Oltre 250.000 ab. · capoluoghi · province",min:33143.98,max:33143.98,popMin:250001,popMax:Infinity,plus15:false},
-     {id:"A3",label:"Fino a 250.000 ab.",min:21781.93,max:21781.93,popMin:65001,popMax:250000,plus15:false}],
-  B:[{id:"B1",label:"Da 10.001 a 65.000 ab.",min:15584.45,max:15584.45,popMin:10001,popMax:65000,plus15:false},
-     {id:"B2",label:"Da 3.000 a 10.000 ab.",min:7837.59,max:7837.59,popMin:3000,popMax:10000,plus15:false}],
-  C:[{id:"C1",label:"Fino a 3.000 ab.",min:7332.22,max:7332.22,popMin:0,popMax:2999,plus15:false}]
+  A:[{id:"A1",label:"Enti metropolitani",min:39857.92,max:39857.92,popMin:250001,popMax:Infinity,plus:0},
+     {id:"A2",label:"Oltre 250.000 ab. · capoluoghi · province",min:33143.98,max:33143.98,popMin:250001,popMax:Infinity,plus:0},
+     {id:"A3",label:"Fino a 250.000 ab.",min:21781.93,max:21781.93,popMin:65001,popMax:250000,plus:0}],
+  B:[{id:"B1",label:"Da 10.001 a 65.000 ab.",min:15584.45,max:15584.45,popMin:10001,popMax:65000,plus:0},
+     {id:"B2",label:"Da 3.000 a 10.000 ab.",min:7837.59,max:7837.59,popMin:3000,popMax:10000,plus:0}],
+  C:[{id:"C1",label:"Fino a 3.000 ab.",min:7332.22,max:7332.22,popMin:0,popMax:2999,plus:0}]
 };
 const POS_2021 = {
-  A:[{id:"A1",label:"Enti metropolitani",min:43054.00,max:64486.96,popMin:250001,popMax:Infinity,plus15:true},
-     {id:"A2",label:"Oltre 250.000 ab. · capoluoghi · province",min:35590.00,max:53665.99,popMin:250001,popMax:Infinity,plus15:true},
-     {id:"A3",label:"Fino a 250.000 ab.",min:23518.00,max:35912.97,popMin:65001,popMax:250000,plus15:false}],
-  B:[{id:"B1",label:"Da 10.001 a 65.000 ab.",min:16806.00,max:26102.22,popMin:10001,popMax:65000,plus15:false},
-     {id:"B2",label:"Da 3.000 a 10.000 ab.",min:8646.00,max:14068.80,popMin:3000,popMax:10000,plus15:false}],
-  C:[{id:"C1",label:"Fino a 3.000 ab.",min:8140.00,max:10928.87,popMin:0,popMax:2999,plus15:false}]
+  A:[{id:"A1",label:"Enti metropolitani",min:43054.00,max:64486.96,popMin:250001,popMax:Infinity,plus:0.15},
+     {id:"A2",label:"Oltre 250.000 ab. · capoluoghi · province",min:35590.00,max:53665.99,popMin:250001,popMax:Infinity,plus:0.15},
+     {id:"A3",label:"Fino a 250.000 ab.",min:23518.00,max:35912.97,popMin:65001,popMax:250000,plus:0}],
+  B:[{id:"B1",label:"Da 10.001 a 65.000 ab.",min:16806.00,max:26102.22,popMin:10001,popMax:65000,plus:0},
+     {id:"B2",label:"Da 3.000 a 10.000 ab.",min:8646.00,max:14068.80,popMin:3000,popMax:10000,plus:0}],
+  C:[{id:"C1",label:"Fino a 3.000 ab.",min:8140.00,max:10928.87,popMin:0,popMax:2999,plus:0}]
+};
+/* dal 1.1.2024: minimi e massimi art. 38 CCNL 23.02.2026; incr = incremento annuo art. 36 sulla posizione in godimento */
+const POS_2024 = {
+  A:[{id:"A1",label:"Enti metropolitani",min:46707.00,max:68139.96,popMin:250001,popMax:Infinity,plus:0.20,incr:3653},
+     {id:"A2",label:"Oltre 250.000 ab. · capoluoghi · province",min:38593.00,max:56668.99,popMin:250001,popMax:Infinity,plus:0.15,incr:3003},
+     {id:"A3",label:"Fino a 250.000 ab.",min:25507.00,max:37901.97,popMin:65001,popMax:250000,plus:0,incr:1989}],
+  B:[{id:"B1",label:"Da 10.001 a 65.000 ab.",min:18236.00,max:27532.22,popMin:10001,popMax:65000,plus:0,incr:1430},
+     {id:"B2",label:"Da 3.000 a 10.000 ab.",min:9374.00,max:14796.80,popMin:3000,popMax:10000,plus:0,incr:728}],
+  C:[{id:"C1",label:"Fino a 3.000 ab.",min:8829.00,max:11617.87,popMin:0,popMax:2999,plus:0,incr:689}]
 };
 const IVC = {
   s2016:[
@@ -492,39 +549,35 @@ const IVC = {
     {da:"2024-01-01",a:"2025-03-31", ab:0,      c:0},
     {da:"2025-04-01",a:"2025-06-30", ab:23.10,  c:18.50},
     {da:"2025-07-01",a:null,         ab:38.47,  c:30.77}
+  ],
+  /* solo per il dovuto: anticipazione 2022-2024 sul tabellare 2021 a regime
+     (0,3% da aprile, 0,5% da luglio 2022), assorbita dal tabellare dal 1.1.2024 */
+  a2022:[
+    {da:"2022-04-01",a:"2022-06-30", ab:10.85,  c:8.68},
+    {da:"2022-07-01",a:"2023-12-31", ab:18.08,  c:14.47}
   ]
 };
-const UNA_TANTUM = {set:"s2016", da:"2023-03-01", a:"2023-12-31", ab:52.22, c:41.78};
 const CONTRATTI = {
-  "c2016":{label:"CCNL 2016‑2018 (17.12.2020)", v:{A:{v50:3481.60,v92:0},B:{v50:3250.22,v92:231.38},C:{v50:2785.28,v92:0}},
+  "c2016":{label:"CCNL 2016‑2018 (17.12.2020)", tabAnnuo:{A:45260.77,B:45260.77,C:36208.62}, v:{A:{v50:3481.60,v92:0},B:{v50:3250.22,v92:231.38},C:{v50:2785.28,v92:0}},
     pos:POS_2016, posTipo:"unico", ivc:"s2016",
     nota:"Tabellare € 45.260,77 annui (fasce A‑B) e 80% per la fascia C. Retribuzione di posizione in valore unico, invariata dal 1.1.2016 al 31.12.2020, con maggiorazione 10%÷50% (CCNI 22.12.2003)."},
-  "c2019a":{label:"CCNL 2019‑2021 — dal 1.1.2019", v:{A:{v50:3561.60,v92:0},B:{v50:3330.22,v92:231.38},C:{v50:2849.28,v92:0}},
+  "c2019a":{label:"CCNL 2019‑2021 — dal 1.1.2019", tabAnnuo:{A:46300.77,B:46300.77,C:37040.59}, v:{A:{v50:3561.60,v92:0},B:{v50:3330.22,v92:231.38},C:{v50:2849.28,v92:0}},
     pos:POS_2016, posTipo:"unico", ivc:"s2019",
     nota:"Primo incremento art. 57 (€ 80/mese A‑B, € 64/mese C): tabellare € 46.300,77 annui. Posizione ancora nei valori 2016‑2020."},
-  "c2019b":{label:"CCNL 2019‑2021 — dal 1.1.2020", v:{A:{v50:3605.60,v92:0},B:{v50:3374.22,v92:231.38},C:{v50:2884.28,v92:0}},
+  "c2019b":{label:"CCNL 2019‑2021 — dal 1.1.2020", tabAnnuo:{A:46872.77,B:46872.77,C:37495.59}, v:{A:{v50:3605.60,v92:0},B:{v50:3374.22,v92:231.38},C:{v50:2884.28,v92:0}},
     pos:POS_2016, posTipo:"unico", ivc:"s2019",
     nota:"Incremento rideterminato (€ 124/mese A‑B, € 99/mese C): tabellare € 46.872,77 annui. Posizione ancora nei valori 2016‑2020."},
-  "c2019c":{label:"CCNL 2019‑2021 — dal 1.1.2021 (a regime)", v:{A:{v50:3616.60,v92:0},B:{v50:3385.22,v92:231.38},C:{v50:2893.28,v92:0}},
+  "c2019c":{label:"CCNL 2019‑2021 — dal 1.1.2021 (a regime)", tabAnnuo:{A:47015.77,B:47015.77,C:37612.59}, v:{A:{v50:3616.60,v92:0},B:{v50:3385.22,v92:231.38},C:{v50:2893.28,v92:0}},
     pos:POS_2021, posTipo:"range", ivc:"s2019",
     nota:"Incremento a regime (€ 135/mese A‑B, € 108/mese C): tabellare € 47.015,77 annui (C € 37.612,59). Posizione con minimo e massimo (artt. 58 e 60)."},
-  "c2022":{label:"CCNL 2022‑2024 (a regime)", v:{A:{v50:3846.60,v92:0},B:{v50:3846.60,v92:231.38},C:{v50:3077.28,v92:0}},
-    pos:POS_2021, posTipo:"range", ivc:"s2022",
-    nota:"Tabellare € 3.846,60/mese (€ 50.005,80 annui; fascia C € 3.077,28). Per la fascia B le tabelle mantengono la voce 92 con voce 50 allineata alla fascia A: verificare l'esposizione effettiva."}
+  "c2022":{label:"CCNL 2022‑2024 — dal 1.1.2024 (a regime)", tabAnnuo:{A:50005.77,B:50005.77,C:40004.59}, v:{A:{v50:3846.60,v92:0},B:{v50:3615.22,v92:231.38},C:{v50:3077.28,v92:0}},
+    pos:POS_2024, posTipo:"range", ivc:"s2022",
+    nota:"Tabellare € 50.005,77 annui fasce A‑B (€ 3.846,60/mese; per la B € 3.615,22 + € 231,38 di posizione conglobata), fascia C € 40.004,59. Posizione con i nuovi minimi e massimi."}
 };
 const CAP_GALL={A:3008.00,B:3008.00,C:1964.00};
 const MENS=13;
 const NOMI_MESI=["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
 
-/* ===================== UTILITY ===================== */
-const $=id=>document.getElementById(id);
-const eur=n=>(isFinite(n)?n:0).toLocaleString("it-IT",{style:"currency",currency:"EUR",minimumFractionDigits:2,maximumFractionDigits:2});
-const num=n=>(isFinite(n)?n:0).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
-const int=n=>(isFinite(n)?n:0).toLocaleString("it-IT",{maximumFractionDigits:0});
-const val=id=>{const v=parseFloat(String($(id).value).replace(",","."));return isFinite(v)?v:0;};
-const chk=id=>$(id).checked;
-const dmy=s=>s?s.split("-").reverse().join("/"):"";
-const meseLabel=ym=>{const[y,m]=ym.split("-");return NOMI_MESI[+m-1]+" "+y;};
 function elencoMesi(dal,al){
   const out=[]; if(!dal||!al) return out;
   let[y,m]=dal.split("-").map(Number); const[ye,me]=al.split("-").map(Number); let g=0;
@@ -536,6 +589,270 @@ function rigaIVC(set,dataISO,fascia){
     if((!r.da||dataISO>=r.da)&&(!r.a||dataISO<=r.a)) return {...r, imp: fascia==="C"?r.c:r.ab};
   return null;
 }
+
+/* ===================== MOTORE DEL PERIODO ===================== */
+const r2=n=>Math.round((n+Number.EPSILON)*100)/100;
+
+/* regime in vigore per decorrenza contrattuale, anche se firmato dopo */
+const REGIMI_DOVUTO=[
+  {da:"2019-01",contratto:"c2019a",ivc:"s2019"},
+  {da:"2020-01",contratto:"c2019b",ivc:"s2019"},
+  {da:"2021-01",contratto:"c2019c",ivc:"a2022"},
+  {da:"2024-01",contratto:"c2022", ivc:"s2022"}
+];
+function regimeDovuto(ym){
+  let r={contratto:"c2016",ivc:"s2016"};
+  for(const x of REGIMI_DOVUTO) if(ym>=x.da) r=x;
+  return r;
+}
+
+/* posizione annua nel regime, partendo da quella in godimento prima dei rinnovi:
+   a ogni rinnovo si aggiunge l'incremento contrattuale (incr) e, se resta sotto,
+   si porta al nuovo minimo. Dal 1.1.2021 (art. 58 CCNL 16.07.2024) i valori sono
+   solo rideterminati, senza incremento; dal 1.1.2024 incremento art. 36 CCNL 23.02.2026. */
+const RINNOVI_POSIZIONE=["c2019c","c2022"];
+function posizioneNelRegime(cfg,contratto){
+  let p=cfg.posizione;
+  for(const k of RINNOVI_POSIZIONE.slice(0,RINNOVI_POSIZIONE.indexOf(contratto)+1)){
+    const cl=incaricoIn(CONTRATTI[k],cfg.fascia,cfg.classe);
+    p=Math.max(p+(cl.incr||0),cl.min);
+  }
+  return p;
+}
+const incaricoIn=(c,f,id)=>c.pos[f].find(i=>i.id===id)||c.pos[f][0];
+
+const quotaAltri=cfg=>cfg.maggAltriTipo==="pct" ? Math.min(Math.max(cfg.maggAltri||0,0),100) : 0;
+
+/* base mensile della maggiorazione, dalle voci del mese */
+function baseMagg(cfg,v){
+  let base=v.tab+v.ivc;
+  if(cfg.bRia)  base+=v.ria;
+  if(cfg.bMat)  base+=v.mat;
+  if(cfg.bPos)  base+=v.pos;
+  if(cfg.bMagg) base+=v.maggPos;
+  if(cfg.bGall) base+=v.gall;
+  return base;
+}
+
+/* voci mensili di un regime: importi al centesimo, come sul cedolino */
+function vociMese(cfg,ym,regime){
+  const c=CONTRATTI[regime.contratto], vv=c.v[cfg.fascia];
+  const ivc=(rigaIVC(regime.ivc,ym+"-01",cfg.fascia)||{imp:0}).imp;
+  const posA=posizioneNelRegime(cfg,regime.contratto), maggPosA=posA*cfg.maggPerc/100;
+  /* galleggiamento fino alla posizione EQ più elevata dell'ente, ricalcolato in ogni regime */
+  let gallA=cfg.posEQ>0 ? Math.max(0,cfg.posEQ-(posA+maggPosA)) : 0;
+  if(cfg.gallCap) gallA=Math.min(gallA,CAP_GALL[cfg.fascia]);
+  const tab=r2(vv.v50+vv.v92), pos=r2(posA/MENS), maggPos=r2(maggPosA/MENS), gall=r2(gallA/MENS);
+  const ria=cfg.ria, mat=cfg.maturato;
+  const magg=r2(baseMagg(cfg,{tab,ivc,ria,mat,pos,maggPos,gall})*cfg.perc/100);
+  /* quota della maggiorazione a carico degli altri enti: solo in percentuale */
+  const riparto=r2(-magg*quotaAltri(cfg)/100);
+  const lordo=r2(tab+ivc+ria+mat+pos+maggPos+gall+magg+riparto);
+  return {tab,v50:vv.v50,v92:vv.v92,ivc,ria,mat,pos,maggPos,gall,magg,riparto,lordo};
+}
+const dovuto=(cfg,ym)=>vociMese(cfg,ym,regimeDovuto(ym));
+
+/* percepito: per default il regime che l'ente applicava prima di ogni rinnovo,
+   cioè fino al mese successivo alla firma (16.07.2024 e 23.02.2026) */
+const APPLICAZIONE=[{da:"2024-08",contratto:"c2019c"},{da:"2026-03",contratto:"c2022"}];
+function regimePercepito(ym,scelta){
+  let k=scelta;
+  if(!k||k==="auto"){ k="c2016"; for(const x of APPLICAZIONE) if(ym>=x.da) k=x.contratto; }
+  return {contratto:k,ivc:CONTRATTI[k].ivc};
+}
+const percepito=(cfg,ym,scelta)=>vociMese(cfg,ym,regimePercepito(ym,scelta));
+
+const VOCI=["tab","v50","v92","ivc","ria","mat","pos","maggPos","gall","magg","riparto","lordo"];
+const VOCI_LORDO=["tab","ivc","ria","mat","pos","maggPos","gall","magg","riparto"];
+
+/* 13ª a ratei: 1/12 delle voci di ogni mese dell'anno compreso nel periodo */
+function rateo13(cfg,mesi){
+  const t={};
+  VOCI.forEach(k=>t[k]=r2(mesi.reduce((s,v)=>s+v[k],0)/12));
+  if(cfg.mensErog!==13){ t.magg=0; t.riparto=0; }
+  t.lordo=r2(VOCI_LORDO.reduce((s,k)=>s+t[k],0));
+  return t;
+}
+const differenza=(d,p)=>Object.fromEntries(VOCI.map(k=>[k,r2(d[k]-p[k])]));
+
+/* percepito modificabile: ogni cella mese × voce (tranne tabellare e lordo, che sono somme).
+   modifiche = { "2019-03": { v50: 3300.02, magg: 1000 } }. La cella modificata sostituisce il
+   calcolato; la maggiorazione (e la quota altri enti) non toccata si ricalcola dalla base nuova,
+   quella modificata a mano resta com'è. */
+const CELLE_MODIFICABILI=["v50","v92","ivc","ria","mat","pos","maggPos","gall","magg","riparto"];
+const celleModificate=mod=>mod?CELLE_MODIFICABILI.filter(k=>typeof mod[k]==="number"&&isFinite(mod[k])):[];
+function applicaModifiche(cfg,v,mod){
+  const chiavi=celleModificate(mod);
+  if(!chiavi.length) return v;
+  const x={...v};
+  chiavi.forEach(k=>x[k]=r2(mod[k]));
+  x.tab=r2(x.v50+x.v92);
+  if(!chiavi.includes("magg"))    x.magg=r2(baseMagg(cfg,x)*cfg.perc/100);
+  if(!chiavi.includes("riparto")) x.riparto=r2(-x.magg*quotaAltri(cfg)/100);
+  x.lordo=r2(VOCI_LORDO.reduce((s,k)=>s+x[k],0));
+  return x;
+}
+
+/* propaga: copia il valore di una cella sul mese e su tutti i successivi del periodo */
+function propaga(modifiche,mesi,ym,k,valore){
+  const out={};
+  Object.keys(modifiche).forEach(m=>out[m]={...modifiche[m]});
+  mesi.filter(m=>m>=ym).forEach(m=>{ out[m]={...out[m],[k]:r2(valore)}; });
+  return out;
+}
+/* ripristina: torna al calcolato per una cella */
+function ripristina(modifiche,ym,k){
+  const out={};
+  Object.keys(modifiche).forEach(m=>{
+    const c={...modifiche[m]};
+    if(m===ym) delete c[k];
+    if(Object.keys(c).length) out[m]=c;
+  });
+  return out;
+}
+
+/* raggruppa i subtotali per anno: anni precedenti a annoRif = arretrati, il resto = anno corrente */
+function ripartisciAnni(anni,annoRif){
+  const gruppo=ys=>{
+    if(!ys.length) return null;
+    const somma=lato=>Object.fromEntries(VOCI.map(k=>[k,r2(ys.reduce((s,y)=>s+anni[y][lato][k],0))]));
+    return {anni:ys,dovuto:somma("dovuto"),percepito:somma("percepito"),diff:somma("diff"),
+      emolumento:r2(ys.reduce((s,y)=>s+anni[y].emolumento,0)),diffNetta:r2(ys.reduce((s,y)=>s+anni[y].diffNetta,0))};
+  };
+  const ys=Object.keys(anni).map(Number).sort((a,b)=>a-b);
+  return {arretrati:gruppo(ys.filter(y=>y<annoRif)),corrente:gruppo(ys.filter(y=>y>=annoRif))};
+}
+
+/* periodo: per ogni mese dovuto, percepito e differenza; la 13ª è esposta a dicembre
+   o nel mese di fine periodo */
+function periodo(cfg,dal,al,opz){
+  const scelta=(opz&&opz.regimePercepito)||"auto";
+  const mesi=elencoMesi(dal,al), righe=[];
+  let acc={d:[],p:[]};
+  const modifiche=(opz&&opz.modifiche)||{};
+  const riga=(ym,tred,d,p,modificate)=>({ym,anno:+ym.slice(0,4),tred,dovuto:d,percepito:p,diff:differenza(d,p),modificate});
+  mesi.forEach((ym,i)=>{
+    const d=dovuto(cfg,ym), p=applicaModifiche(cfg,percepito(cfg,ym,scelta),modifiche[ym]);
+    righe.push(riga(ym,false,d,p,celleModificate(modifiche[ym])));
+    acc.d.push(d); acc.p.push(p);
+    if(ym.endsWith("-12")||i===mesi.length-1){
+      righe.push(riga(ym,true,rateo13(cfg,acc.d),rateo13(cfg,acc.p),[]));
+      acc={d:[],p:[]};
+    }
+  });
+  const somma=(rr,lato)=>Object.fromEntries(VOCI.map(k=>[k,r2(rr.reduce((s,r)=>s+r[lato][k],0))]));
+  /* subtotali per anno; l'emolumento di dicembre 2023 (DL 145/2023) anticipa gli incrementi 2024 */
+  const anni={};
+  [...new Set(righe.map(r=>r.anno))].forEach(y=>{
+    const rr=righe.filter(r=>r.anno===y), diff=somma(rr,"diff");
+    const emolumento=y===2024 ? (cfg.emolumento2023||0) : 0;
+    anni[y]={dovuto:somma(rr,"dovuto"),percepito:somma(rr,"percepito"),diff,emolumento,diffNetta:r2(diff.lordo-emolumento)};
+  });
+  const avvisi=[];
+  if(cfg.emolumento2023>0&&!anni[2024])
+    avvisi.push({codice:"emolumento-fuori-periodo",testo:"L'emolumento di dicembre 2023 si deduce dalle differenze 2024, che non rientrano nel periodo."});
+  if(cfg.maggAltriTipo==="imp"&&cfg.maggAltri>0)
+    avvisi.push({codice:"riparto-importo",testo:"Il riparto fra enti in importo fisso non si applica al periodo: indicare la percentuale a carico degli altri enti."});
+  return {mesi,righe,anni,avvisi};
+}
+
+/* ===================== PRATICA: salva / apri ===================== */
+/* Il file contiene solo i campi elencati qui: nessun codice fiscale né altro dato personale.
+   Funzioni pure, senza DOM: la pagina legge i campi in un oggetto "stato" e lo riapplica. */
+const PRATICA_VERSIONE=1;
+const pulisciStato=s=>({
+  contratto:s.contratto, fascia:s.fascia, classe:s.classe, ivcScelta:s.ivcScelta, ivcValore:s.ivcValore, tabellare:s.tabellare,
+  posizione:s.posizione, ria:s.ria, maturato:s.maturato, maggPos:s.maggPos, posEQ:s.posEQ, perc:s.perc, mensilita:s.mensilita,
+  base:{ria:s.base.ria, mat:s.base.mat, pos:s.base.pos, magg:s.base.magg, gall:s.base.gall},
+  gallCap:s.gallCap, incr15:s.incr15,
+  riparto:{tipo:s.riparto.tipo, valore:s.riparto.valore},
+  enti:s.enti.map(e=>({nome:e.nome, ab:e.ab})),
+  dal:s.dal, al:s.al, regimePercepito:s.regimePercepito, emolumento2023:s.emolumento2023,
+  modifiche:Object.fromEntries(Object.keys(s.modifiche).map(m=>[m,{...s.modifiche[m]}]))
+});
+function serializzaPratica(stato,meta){
+  return {versione:PRATICA_VERSIONE, nomePratica:(meta&&meta.nomePratica)||"", salvataIl:(meta&&meta.data)||new Date().toISOString(), stato:pulisciStato(stato)};
+}
+const MESE_RE=/^\d{4}-(0[1-9]|1[0-2])$/;
+const isObj=x=>x!==null&&typeof x==="object"&&!Array.isArray(x);
+const isNum=(x,min,max)=>typeof x==="number"&&isFinite(x)&&x>=min&&x<=max;
+function validaPratica(file){
+  if(!isObj(file)) return {ok:false,errori:["Il file non contiene una pratica."]};
+  if(file.versione!==PRATICA_VERSIONE)
+    return {ok:false,errori:["Versione della pratica non supportata ("+(file.versione===undefined?"assente":file.versione)+"): questa pagina legge la versione "+PRATICA_VERSIONE+"."]};
+  const errori=[];
+  if(file.nomePratica!==undefined&&(typeof file.nomePratica!=="string"||file.nomePratica.length>200)) errori.push("Il nome della pratica non è valido.");
+  const s=file.stato;
+  if(!isObj(s)) return {ok:false,errori:errori.concat("Lo stato della pratica è assente o non valido.")};
+  const MAX=1e7;
+  const num=(k,etichetta,max)=>{ if(!isNum(s[k],0,max||MAX)) errori.push(etichetta+": valore non valido."); };
+  const bool=(o,k,etichetta)=>{ if(typeof o[k]!=="boolean") errori.push(etichetta+": deve essere sì/no."); };
+  const ct=isObj(CONTRATTI)&&Object.prototype.hasOwnProperty.call(CONTRATTI,s.contratto)?CONTRATTI[s.contratto]:null;
+  if(!ct) errori.push("Contratto sconosciuto.");
+  if(!["A","B","C"].includes(s.fascia)) errori.push("Fascia sconosciuta (ammesse A, B, C).");
+  else if(ct&&!ct.pos[s.fascia].some(i=>i.id===s.classe)) errori.push("Classe «"+s.classe+"» inesistente per la fascia "+s.fascia+" di questo contratto.");
+  if(ct){
+    const m=/^r(\d+)$/.exec(typeof s.ivcScelta==="string"?s.ivcScelta:"");
+    if(!(s.ivcScelta==="zero"||s.ivcScelta==="man"||(m&&+m[1]<(IVC[ct.ivc]||[]).length))) errori.push("Scelta IVC non valida per questo contratto.");
+  }
+  num("ivcValore","Importo IVC"); num("tabellare","Tabellare"); num("posizione","Posizione"); num("ria","RIA"); num("maturato","Maturato");
+  num("maggPos","Maggiorazione di posizione (%)",100); num("posEQ","Posizione EQ"); num("perc","Percentuale di maggiorazione",100);
+  num("emolumento2023","Emolumento di dicembre 2023");
+  if(s.mensilita!==12&&s.mensilita!==13) errori.push("Mensilità: ammesse solo 12 o 13.");
+  if(!isObj(s.base)) errori.push("Opzioni della base mancanti.");
+  else[["ria","RIA"],["mat","Maturato"],["pos","Posizione"],["magg","Maggiorazione di posizione"],["gall","Galleggiamento"]].forEach(([k,e])=>bool(s.base,k,"Base · "+e));
+  bool(s,"gallCap","Massimale al galleggiamento"); bool(s,"incr15","Massimo di posizione maggiorato");
+  if(!isObj(s.riparto)||!["pct","imp"].includes(s.riparto.tipo)||!isNum(s.riparto.valore,0,s.riparto&&s.riparto.tipo==="pct"?100:MAX))
+    errori.push("Riparto fra enti non valido.");
+  if(!Array.isArray(s.enti)||s.enti.length<1||s.enti.length>50) errori.push("Elenco enti non valido (da 1 a 50 enti).");
+  else s.enti.forEach((e,i)=>{
+    if(!isObj(e)||typeof e.nome!=="string"||e.nome.length>200) errori.push("Ente "+(i+1)+": nome dell'ente non valido.");
+    if(!isObj(e)||!isNum(e.ab,0,1e8)) errori.push("Ente "+(i+1)+": abitanti non validi.");
+  });
+  [["dal","Periodo «dal»"],["al","Periodo «al»"]].forEach(([k,e])=>{ if(typeof s[k]!=="string"||(s[k]!==""&&!MESE_RE.test(s[k]))) errori.push(e+": il mese deve essere nel formato AAAA-MM."); });
+  if(s.regimePercepito!=="auto"&&!Object.prototype.hasOwnProperty.call(CONTRATTI,s.regimePercepito)) errori.push("Regime del percepito sconosciuto.");
+  if(!isObj(s.modifiche)) errori.push("Modifiche del percepito non valide.");
+  else{
+    const nelPeriodo=new Set(elencoMesi(s.dal,s.al));
+    Object.keys(s.modifiche).forEach(m=>{
+      const voci=s.modifiche[m];
+      if(!MESE_RE.test(m)) errori.push("Modifiche: «"+m+"» non è un mese nel formato AAAA-MM.");
+      else if(!nelPeriodo.has(m)) errori.push("Modifiche: il mese "+m+" non rientra nel periodo della pratica.");
+      if(!isObj(voci)) { errori.push("Modifiche: i valori del mese "+m+" non sono validi."); return; }
+      Object.keys(voci).forEach(k=>{
+        if(!CELLE_MODIFICABILI.includes(k)) errori.push("Modifiche "+m+": la voce «"+k+"» non esiste.");
+        else if(!isNum(voci[k],-1e7,1e7)) errori.push("Modifiche "+m+" · "+k+": valore non valido.");
+      });
+    });
+  }
+  if(errori.length) return {ok:false,errori};
+  /* campi non previsti: ignorati e segnalati (mai riportati nello stato) */
+  const extra=(o,ammessi,prefisso)=>Object.keys(o).filter(k=>!ammessi.includes(k)).map(k=>prefisso+k);
+  const ignorati=[
+    ...extra(file,["versione","nomePratica","salvataIl","stato"],""),
+    ...extra(s,Object.keys(pulisciStato(s)),"stato."),
+    ...extra(s.base,["ria","mat","pos","magg","gall"],"stato.base."),
+    ...extra(s.riparto,["tipo","valore"],"stato.riparto."),
+    ...[].concat(...s.enti.map((e,i)=>extra(e,["nome","ab"],"stato.enti["+i+"].")))
+  ];
+  return {ok:true, nomePratica:file.nomePratica||"", stato:pulisciStato(s),
+    avvisi:ignorati.length?["Campi non previsti ignorati: "+ignorati.join(", ")+"."]:[]};
+}
+
+globalThis.Motore={serializzaPratica,validaPratica,regimeDovuto,regimePercepito,dovuto,percepito,periodo,propaga,ripristina,ripartisciAnni,CELLE_MODIFICABILI};
+</script>
+<script>
+"use strict";
+
+/* ===================== UTILITY ===================== */
+const $=id=>document.getElementById(id);
+const eur=n=>(isFinite(n)?n:0).toLocaleString("it-IT",{style:"currency",currency:"EUR",minimumFractionDigits:2,maximumFractionDigits:2});
+const num=n=>(isFinite(n)?n:0).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
+const int=n=>(isFinite(n)?n:0).toLocaleString("it-IT",{maximumFractionDigits:0});
+const val=id=>{const v=parseFloat(String($(id).value).replace(",","."));return isFinite(v)?v:0;};
+const chk=id=>$(id).checked;
+const dmy=s=>s?s.split("-").reverse().join("/"):"";
+const meseLabel=ym=>{const[y,m]=ym.split("-");return NOMI_MESI[+m-1]+" "+y;};
 
 /* ===================== ENTI ===================== */
 let enti=[{nome:"Comune capofila",ab:4200},{nome:"Comune convenzionato",ab:2800}];
@@ -562,13 +879,14 @@ const totAbitanti=()=>enti.reduce((s,e)=>s+(e.ab||0),0);
 
 /* ===================== SELECT ===================== */
 function popolaContratti(){
-  ["contratto","contratto-b"].forEach(id=>{
+  ["contratto","regime-perc"].forEach(id=>{
     const s=$(id); s.innerHTML="";
+    if(id==="regime-perc") s.innerHTML='<option value="auto">Contratto precedente al rinnovo (default)</option>';
     Object.keys(CONTRATTI).forEach(k=>{
       const o=document.createElement("option"); o.value=k; o.textContent=CONTRATTI[k].label; s.appendChild(o);
     });
   });
-  $("contratto").value="c2019c"; $("contratto-b").value="c2022";
+  $("contratto").value="c2019c";
 }
 const contratto=()=>CONTRATTI[$("contratto").value];
 function popolaIncarichi(keep){
@@ -581,9 +899,12 @@ function popolaIncarichi(keep){
   });
   if(prev&&c.pos[f].some(i=>i.id===prev)) sel.value=prev;
 }
-const incaricoIn=(c,f,id)=>c.pos[f].find(i=>i.id===id)||c.pos[f][0];
 const incarico=()=>incaricoIn(contratto(),$("fascia").value,$("incarico").value);
 const tabContratto=(c,f)=>(c.v[f].v50+c.v[f].v92)*MENS;
+/* massimo di posizione, con la maggiorazione del massimo se attivata e prevista per la classe */
+const maxPos=i=>i.max*(1+(chk("incr15")&&i.plus?i.plus:0));
+/* V.50 + V.92 deve restituire il tabellare di fascia del CCNL (tolleranza: arrotondamento al centesimo mensile) */
+const tabCoerente=(c,f,annuo)=>Math.abs(annuo-c.tabAnnuo[f])<MENS*0.005+0.001;
 
 let ivcSetCorrente=null;   /* set IVC attualmente caricato nel menu */
 function popolaIVC(){
@@ -626,12 +947,12 @@ function applicaTabellare(){
 }
 function aggiornaPosizione(reset){
   const c=contratto(),i=incarico();
-  const maxC=i.max*(chk("incr15")&&i.plus15?1.15:1);
+  const maxC=maxPos(i);
   $("posizione-range").min=0;
   $("posizione-range").max=Math.round(c.posTipo==="range"?maxC:maxC*1.6);
   $("pos-min").textContent=c.posTipo==="range"?"minimo CCNL "+eur(i.min):"valore contrattuale "+eur(i.min);
-  $("pos-max").textContent=c.posTipo==="range"?("massimo CCNL "+eur(maxC)+(chk("incr15")&&i.plus15?" (+15%)":"")):"";
-  $("incr15").disabled=!i.plus15;
+  $("pos-max").textContent=c.posTipo==="range"?("massimo CCNL "+eur(maxC)+(chk("incr15")&&i.plus?" (+"+Math.round(i.plus*100)+"%)":"")):"";
+  $("incr15").disabled=!i.plus;
   if(reset) $("posizione").value=i.min.toFixed(2);
   $("posizione-range").value=val("posizione");
 }
@@ -742,7 +1063,7 @@ function calcola(){
     '<tr><td colspan="2"><b>Lordo mensile</b></td><td colspan="2"><b>'+eur(lordoM)+'</b></td></tr>';
 
   /* avvisi */
-  const ac=[], maxEff=i.max*(chk("incr15")&&i.plus15?1.15:1);
+  const ac=[], maxEff=maxPos(i);
   if(c.posTipo==="range"){
     if(cfg.posizione<i.min){ac.push(["err","Posizione <b>sotto il minimo CCNL</b> ("+eur(i.min)+")."]);$("pos-flag").innerHTML='<span class="pill err">sotto il minimo</span>';}
     else if(cfg.posizione>maxEff){ac.push(["err","Posizione <b>oltre il massimo CCNL</b> ("+eur(maxEff)+")."]);$("pos-flag").innerHTML='<span class="pill err">oltre il massimo</span>';}
@@ -763,7 +1084,7 @@ function calcola(){
   }
   if(cfg.mensErog===12) ac.push(["warn","Maggiorazione corrisposta su <b>12 mensilità</b>: per l'ARAN (parere SEG_032) è trattamento stipendiale e va computata anche nella 13ª. Differenza annua: "+eur(maggM)+"."]);
   if(!cfg.bMagg&&v.maggA>0) ac.push(["warn","La <b>maggiorazione della posizione è esclusa</b> dalla base: difforme dall'orientamento ARAN AFL4 del 24.03.2021, che la include."]);
-  if($("contratto").value==="c2022"&&f==="B") ac.push(["warn","Fascia B nel CCNL 2022‑2024: le tabelle allineano la voce 50 alla fascia A e mantengono la voce 92 di € 231,38. Verificare se la conglobata sia ancora dovuta."]);
+  if(!tabCoerente(c,f,cfg.tabellare)) ac.push(["err","Il tabellare annuo inserito ("+eur(cfg.tabellare)+") <b>non corrisponde</b> al tabellare di fascia "+f+" del contratto ("+eur(c.tabAnnuo[f])+")."]);
   $("alert-calc").innerHTML=ac.map(a=>'<div class="note '+a[0]+'">'+a[1]+'</div>').join("");
 
   const pop=totAbitanti(), att=classePerPop(c,pop), ae=[];
@@ -783,124 +1104,168 @@ function classePerPop(c,pop){
 }
 
 /* ---------- pagina 2 ---------- */
-function sviluppo(cfg,setIVC,auto,vv){
-  const v=voci(cfg), mesi=elencoMesi($("dal").value,$("al").value);
-  const tabM=cfg.tabellare/MENS, posTotM=v.posTotA/MENS;
-  /* scomposizione del trattamento stipendiale: V.50 e V.92 (posizione conglobata, fascia B) */
-  const congl = (vv && vv.v92>0 && Math.abs(cfg.tabellare-(vv.v50+vv.v92)*MENS)<0.01) ? vv.v92 : 0;
-  const v50M=tabM-congl, posM=v.posA/MENS, maggPosM=v.maggA/MENS, gallM=v.gallA/MENS;
+function cfgPeriodo(){
+  return {...cfgBase(), classe:$("incarico").value, posEQ:val("pos-dir"), emolumento2023:Math.max(0,val("emolumento"))};
+}
+/* percepito corretto a mano: { "2019-03": { v50: 3300.02 } }.
+   Resta in memoria; si azzera al cambio di fascia, classe o periodo */
+let modifiche={}, mesiPeriodo=[], sigProspetto="";
+const azzeraModifiche=()=>{ modifiche={}; };
 
-  const riga=(ym,ivcM,mgL,dt,tred)=>({ym,tred,ivcM,tabM,posTotM,maggLordaM:mgL,detrM:-dt,maggM:mgL-dt,
-    v50M, v92M:congl, riaM:cfg.ria, matM:cfg.maturato, posM, maggPosM, gallM,
-    lordoM: tabM+ivcM+cfg.ria+cfg.maturato+posTotM+(mgL-dt)});
+const ETICHETTE_VOCE={v50:"V.50 Stipendio",v92:"V.92 Conglobata",ivc:"V.53 IVC",ria:"RIA",mat:"Maturato",pos:"V.60 Posizione",
+  maggPos:"Magg. posizione",gall:"V.107 Galleggiam.",magg:"V.79 Maggiorazione",riparto:"Quota altri enti"};
+const fmtDf=x=>(x>0.004?"+":"")+num(x);
+const clsDf=x=>Math.abs(x)<0.005?"":(x>0?"pos":"neg");
 
-  const righe=[];
-  mesi.forEach(ym=>{
-    const ivcM = auto ? ((rigaIVC(setIVC,ym+"-01",cfg.fascia)||{imp:0}).imp) : cfg.ivcFisso;
-    const mgL=baseMensile(cfg,v,ivcM)*(cfg.perc/100), dt=detrazione(cfg,mgL);
-    righe.push(riga(ym,ivcM,mgL,dt,false));
-    if(ym.endsWith("-12")) righe.push(riga(ym,ivcM,cfg.mensErog===13?mgL:0,cfg.mensErog===13?dt:0,true));
+/* righe del prospetto, uguali a schermo e nel CSV: per ogni mese il lordo e sotto le voci valorizzate,
+   poi subtotale per anno, arretrati / anno corrente e totale del periodo */
+function lineeProspetto(r,calcolato,annoRif){
+  const voci=Motore.CELLE_MODIFICABILI.filter(k=>r.righe.some(m=>m.dovuto[k]||m.percepito[k]||m.modificate.includes(k)));
+  const L=[];
+  const blocco=(cls,label,csvMese,src,m,calcM)=>{
+    L.push({t:"head",cls,label,csvMese,csvVoce:"Lordo",d:src.dovuto.lordo,p:src.percepito.lordo,df:src.diff.lordo});
+    voci.forEach(k=>L.push({t:"voce",label:ETICHETTE_VOCE[k],csvMese,csvVoce:ETICHETTE_VOCE[k],
+      d:src.dovuto[k],p:src.percepito[k],df:src.diff[k],
+      ym:m&&!m.tred?m.ym:null,k,mod:!!(m&&m.modificate.includes(k)),calc:calcM?calcM.percepito[k]:null}));
+  };
+  const extra=(a,csvMese)=>{ if(a.emolumento>0){
+    L.push({t:"extra",cls:"detr",label:"Emolumento di dicembre 2023 (a dedurre)",csvMese,csvVoce:"Emolumento dicembre 2023 (a dedurre)",d:null,p:null,df:-a.emolumento});
+    L.push({t:"extra",cls:"hl",label:"Differenza al netto",csvMese,csvVoce:"Differenza netta",d:null,p:null,df:a.diffNetta});
+  } };
+  let prev=null;
+  r.righe.forEach((m,i)=>{
+    const camb=!m.tred&&prev!==null&&Math.abs(m.dovuto.lordo-prev)>0.005;
+    if(!m.tred) prev=m.dovuto.lordo;
+    blocco((m.tred?"tred":"")+(camb?" var":""),m.tred?"13ª "+m.anno+" (ratei)":meseLabel(m.ym),m.tred?"13a ratei "+m.anno:m.ym,m,m,calcolato.righe[i]);
+    if(!r.righe[i+1]||r.righe[i+1].anno!==m.anno){
+      const a=r.anni[m.anno], t="Subtotale "+m.anno;
+      blocco("sub",t,t,a); extra(a,t);
+    }
   });
-  const s=k=>righe.reduce((a,r)=>a+r[k],0);
-  return {mesi,righe,v,congl,perc:cfg.perc,
-    tot:{tab:s("tabM"),ivc:s("ivcM"),pos:s("posTotM"),magg:s("maggM"),lordo:s("lordoM"),
-         maggLorda:s("maggLordaM"),detr:s("detrM"),
-         v50:s("v50M"),v92:s("v92M"),ria:s("riaM"),mat:s("matM"),
-         posBase:s("posM"),maggPos:s("maggPosM"),gall:s("gallM")},
-    nMesi:mesi.length,nTred:righe.filter(r=>r.tred).length};
+  if(Object.keys(r.anni).length>1){
+    const g=Motore.ripartisciAnni(r.anni,annoRif);
+    const arco=a=>a.anni[0]===a.anni[a.anni.length-1]?""+a.anni[0]:a.anni[0]+"–"+a.anni[a.anni.length-1];
+    if(g.arretrati){ const t="Arretrati anni precedenti ("+arco(g.arretrati)+")"; blocco("grp",t,t,g.arretrati); extra(g.arretrati,t); }
+    if(g.corrente){ const t=(g.corrente.anni.length>1?"Anno corrente e successivi (":"Anno corrente (")+arco(g.corrente)+")"; blocco("grp",t,t,g.corrente); extra(g.corrente,t); }
+  }
+  const tot=Motore.ripartisciAnni(r.anni,0).corrente;
+  blocco("tot","Totale periodo","TOTALE",tot); extra(tot,"TOTALE");
+  return {linee:L,tot};
 }
-/* colonne dello sviluppo mensile: solo quelle effettivamente valorizzate */
-function colonneMesi(r){
-  const col=[{k:"v50M",t:"V.50 Stipendio",tot:"v50"}];
-  if(r.congl>0)          col.push({k:"v92M",t:"V.92 Conglobata",tot:"v92"});
-  col.push({k:"ivcM",t:"V.53 IVC",tot:"ivc"});
-  if(r.tot.ria)          col.push({k:"riaM",t:"RIA",tot:"ria"});
-  if(r.tot.mat)          col.push({k:"matM",t:"Maturato",tot:"mat"});
-  col.push({k:"posM",t:"V.60 Posizione",tot:"posBase"});
-  if(r.tot.maggPos)      col.push({k:"maggPosM",t:"Magg. posizione",tot:"maggPos"});
-  if(r.tot.gall)         col.push({k:"gallM",t:"V.107 Galleggiam.",tot:"gall"});
-  if(r.tot.detr){
-    col.push({k:"maggLordaM",t:"Magg. "+num(r.perc)+"% unica",tot:"maggLorda"});
-    col.push({k:"detrM",t:"Quota altri enti",tot:"detr"});
-    col.push({k:"maggM",t:"V.79 A carico ente",tot:"magg"});
-  }else col.push({k:"maggM",t:"V.79 Maggiorazione",tot:"magg"});
-  col.push({k:"lordoM",t:"Lordo",tot:"lordo"});
-  return col;
+function htmlLinea(l){
+  const df='<td class="'+clsDf(l.df)+'">'+fmtDf(l.df)+'</td>';
+  if(l.t==="voce"){
+    const p=l.ym
+      ? '<span class="az"><button type="button" data-az="prop" title="Propaga ai mesi successivi">↓ propaga</button><button type="button" data-az="rip" title="Ripristina calcolato">↺ ripristina</button></span>'+
+        '<input type="number" step="0.01" class="cella" value="'+l.p.toFixed(2)+'" aria-label="'+l.label+' percepito '+meseLabel(l.ym)+'" title="Calcolato: '+num(l.calc)+'">'
+      : num(l.p);
+    return '<tr class="voce'+(l.mod?" mod":"")+'"'+(l.ym?' data-ym="'+l.ym+'" data-k="'+l.k+'"':"")+'><td>'+l.label+'</td><td>'+num(l.d)+'</td><td>'+p+'</td>'+df+'</tr>';
+  }
+  const dot=(l.cls||"").includes("var")?'<span class="dot"></span>':"";
+  return '<tr class="'+l.t+" "+(l.cls||"")+'"><td>'+dot+l.label+'</td><td>'+(l.d===null?"":num(l.d))+'</td><td>'+(l.p===null?"":num(l.p))+'</td>'+df+'</tr>';
 }
+/* aggiorna i valori senza ricostruire la tabella: il focus resta dove sta */
+function aggiornaLinee(linee){
+  const rows=$("pro-body").rows;
+  linee.forEach((l,i)=>{
+    const tr=rows[i], c=tr.cells;
+    c[3].textContent=fmtDf(l.df); c[3].className=clsDf(l.df);
+    if(l.t==="voce"){
+      tr.classList.toggle("mod",l.mod);
+      c[1].textContent=num(l.d);
+      const inp=c[2].querySelector("input");
+      if(inp){ inp.value=l.p.toFixed(2); inp.title="Calcolato: "+num(l.calc); } else c[2].textContent=num(l.p);
+    }else{
+      c[1].textContent=l.d===null?"":num(l.d);
+      c[2].textContent=l.p===null?"":num(l.p);
+    }
+  });
+}
+function opzPeriodo(mod){ return {regimePercepito:$("regime-perc").value,modifiche:mod}; }
+
 function calcolaPeriodo(){
-  const c=contratto(),f=$("fascia").value,cfg=cfgBase(),auto=chk("ivc-auto");
-  const r=sviluppo(cfg,c.ivc,auto,c.v[f]);
-  const av=[];
+  programmaBozza();
+  const f=$("fascia").value, cfg=cfgPeriodo();
+  const r=Motore.periodo(cfg,$("dal").value,$("al").value,opzPeriodo(modifiche));
   if(!r.mesi.length){
-    $("mesi-head").innerHTML=""; $("mesi-body").innerHTML=""; $("cmp-body").innerHTML="";
-    $("h-periodo").textContent="";
+    $("pro-body").innerHTML=""; sigProspetto=""; $("pro-info").textContent=""; $("btn-rip-tutto").disabled=true;
+    $("cmp-body").innerHTML=""; $("ivc-tab-wrap").innerHTML="";
+    $("h-periodo").textContent=""; mesiPeriodo=[];
     ["kpi-magg-p","kpi-lordo-p"].forEach(k=>$(k).textContent="—");
     ["kpi-magg-p-sub","kpi-lordo-p-sub"].forEach(k=>$(k).textContent="");
     ultimo2=null;
     $("alert-mesi").innerHTML='<div class="note err">Periodo non valido: la data <b>al</b> deve essere successiva o uguale a <b>dal</b>.</div>';
     return;
   }
+  mesiPeriodo=r.mesi;
+  const nMod=r.righe.reduce((n,m)=>n+m.modificate.length,0);
+  const calcolato=nMod?Motore.periodo(cfg,$("dal").value,$("al").value,opzPeriodo({})):r;
+  const av=[];
   if(r.mesi.length>=180) av.push(["warn","Periodo troppo esteso: lo sviluppo è stato troncato a 180 mesi."]);
+  r.avvisi.forEach(a=>av.push(["warn",a.testo]));
+  const nTred=r.righe.filter(x=>x.tred).length;
   $("h-periodo").textContent="· "+meseLabel(r.mesi[0])+(r.mesi.length>1?" → "+meseLabel(r.mesi[r.mesi.length-1]):"")+
-    " ("+r.nMesi+(r.nMesi===1?" mese":" mesi")+(r.nTred?" + "+r.nTred+" tredicesima"+(r.nTred>1?"e":""):"")+")";
+    " ("+r.mesi.length+(r.mesi.length===1?" mese":" mesi")+" + "+nTred+" rate"+(nTred>1?"i":"o")+" di 13ª)";
 
-  const col=colonneMesi(r);
-  $("mesi-head").innerHTML='<tr><th>Mese</th>'+col.map(x=>'<th>'+x.t+'</th>').join("")+'</tr>';
-  let prev=null;
-  $("mesi-body").innerHTML=r.righe.map(m=>{
-    const camb=!m.tred&&prev!==null&&Math.abs(m.ivcM-prev)>0.005;
-    if(!m.tred) prev=m.ivcM;
-    return '<tr class="'+(m.tred?"tred":(camb?"var":""))+'"><td>'+(camb?'<span class="dot"></span>':'')+
-      (m.tred?"13ª mensilità "+m.ym.split("-")[0]:meseLabel(m.ym))+'</td>'+
-      col.map(x=>'<td>'+eur(m[x.k])+'</td>').join("")+'</tr>';
-  }).join("")+
-  '<tr class="tot"><td>Totale periodo</td>'+col.map(x=>'<td>'+eur(r.tot[x.tot])+'</td>').join("")+'</tr>';
+  const {linee,tot}=lineeProspetto(r,calcolato,new Date().getFullYear());
+  const tD=tot.dovuto, tP=tot.percepito, tDf=tot.diff, emol=tot.emolumento, netta=tot.diffNetta;
 
-  const mm=r.righe.filter(x=>!x.tred).map(x=>x.maggM);
-  const mn=Math.min(...mm),mx=Math.max(...mm);
-  $("kpi-magg-p").textContent=eur(r.tot.magg);
-  $("kpi-magg-p-sub").textContent=(Math.abs(mx-mn)<0.005?("costante "+eur(mx)+"/mese"):("da "+eur(mn)+" a "+eur(mx)+"/mese"))+
-    (r.tot.detr?" · al netto di "+eur(-r.tot.detr)+" a carico di altri enti":"");
-  $("kpi-lordo-p").textContent=eur(r.tot.lordo);
-  $("kpi-lordo-p-sub").textContent=r.nMesi+" mensilità"+(r.nTred?" + "+r.nTred+" tredicesima"+(r.nTred>1?"e":""):"");
+  const sig=linee.map(l=>l.t+"|"+l.label+"|"+(l.ym||"")+(l.k||"")).join("\n");
+  if(sig===sigProspetto) aggiornaLinee(linee);
+  else{ $("pro-body").innerHTML=linee.map(htmlLinea).join(""); sigProspetto=sig; }
+  $("pro-info").textContent=nMod
+    ? nMod+(nMod===1?" cella del percepito modificata":" celle del percepito modificate")+" a mano (evidenziate): differenze, subtotali e totali ne tengono conto."
+    : "Percepito interamente calcolato: nessuna cella modificata.";
+  $("btn-rip-tutto").disabled=!nMod;
 
-  /* tabella IVC del periodo */
-  const usate=new Set(r.mesi.map(ym=>{const x=rigaIVC(c.ivc,ym+"-01",f);return x?String(x.da)+"|"+String(x.a):"";}));
-  let h='<table class="mini"><thead><tr><th>Validità IVC — voce 53</th><th>Fasce A‑B</th><th>Fascia C</th></tr></thead><tbody>';
-  (IVC[c.ivc]||[]).forEach(x=>{
-    const now=auto&&usate.has(String(x.da)+"|"+String(x.a));
-    const per=(x.da?"dal "+dmy(x.da):"fino al "+dmy(x.a))+(x.da&&x.a?" al "+dmy(x.a):(x.da&&!x.a?" (in corso)":""));
-    h+='<tr class="'+(now?"now":"")+'"><td>'+per+'</td><td>'+eur(x.ab)+'</td><td>'+eur(x.c)+'</td></tr>';
+  $("kpi-magg-p").textContent=eur(tD.magg+tD.riparto);
+  $("kpi-magg-p-sub").textContent="dovuta"+(tD.riparto?" a carico dell'ente":"")+" · percepita "+eur(tP.magg+tP.riparto);
+  $("kpi-lordo-p").textContent=eur(tD.lordo);
+  $("kpi-lordo-p-sub").textContent="dovuto · differenza "+eur(netta)+(emol?" al netto dell'emolumento 2023":"");
+
+  /* regimi del dovuto nel periodo */
+  const tratti=[];
+  r.mesi.forEach(ym=>{
+    const g=Motore.regimeDovuto(ym), ivc=(rigaIVC(g.ivc,ym+"-01",f)||{imp:0}).imp, k=g.contratto+"|"+ivc, u=tratti[tratti.length-1];
+    if(u&&u.k===k) u.al=ym; else tratti.push({k,dal:ym,al:ym,label:CONTRATTI[g.contratto].label,ivc});
   });
-  $("ivc-tab-wrap").innerHTML=h+'</tbody></table>';
+  $("ivc-tab-wrap").innerHTML='<table class="mini"><thead><tr><th>Dovuto · periodo</th><th>Contratto</th><th>IVC</th></tr></thead><tbody>'+
+    tratti.map(t=>'<tr><td>'+meseLabel(t.dal)+(t.al!==t.dal?" → "+meseLabel(t.al):"")+'</td><td>'+t.label+'</td><td>'+eur(t.ivc)+'</td></tr>').join("")+'</tbody></table>';
+  $("alert-ivc").innerHTML="";
+  $("alert-mesi").innerHTML=av.map(a=>'<div class="note '+a[0]+'">'+a[1]+'</div>').join("");
 
-  if(auto&&r.mesi.some(ym=>!rigaIVC(c.ivc,ym+"-01",f)))
-    av.push(["warn","Per alcuni mesi non esiste una riga IVC nelle tabelle del contratto selezionato: in quei mesi l'IVC è pari a zero."]);
-  const ut=r.mesi.filter(ym=>UNA_TANTUM.set===c.ivc&&ym+"-01">=UNA_TANTUM.da&&ym+"-01"<=UNA_TANTUM.a);
-  if(ut.length)
-    av.push(["ok","Nel periodo ricadono "+ut.length+" mensilità con <b>una tantum 1,5% L. 197/2022</b> (voce 119): "+eur(f==="C"?UNA_TANTUM.c:UNA_TANTUM.ab)+"/mese, totale "+eur((f==="C"?UNA_TANTUM.c:UNA_TANTUM.ab)*ut.length)+". Non concorre alla base né ai totali."]);
-  $("alert-ivc").innerHTML=av.map(a=>'<div class="note '+a[0]+'">'+a[1]+'</div>').join("");
-  $("alert-mesi").innerHTML="";
+  const righe=[["Stipendio tabellare",t=>t.tab],["IVC",t=>t.ivc],["Retribuzione di posizione",t=>t.pos+t.maggPos+t.gall],
+    ["Maggiorazione convenzione",t=>t.magg+t.riparto],["Totale lordo",t=>t.lordo]];
+  const tr=(lab,x,cls)=>{const d=x[2],c=Math.abs(d)<0.005?"":(d>0?"pos":"neg");
+    return '<tr class="'+(cls||"")+'"><td>'+lab+'</td><td>'+(x[0]===null?"":eur(x[0]))+'</td><td>'+(x[1]===null?"":eur(x[1]))+'</td><td class="'+c+'">'+(d>0?"+":"")+eur(d)+'</td></tr>';};
+  let hc=righe.map(([lab,fn],k)=>tr(lab,[fn(tD),fn(tP),fn(tDf)],k===righe.length-1?"tot":"")).join("");
+  if(emol) hc+=tr("Emolumento dicembre 2023",[null,null,-emol])+tr("Differenza al netto",[null,null,netta],"tot");
+  $("cmp-body").innerHTML=hc;
 
-  /* confronto */
-  const cB=CONTRATTI[$("contratto-b").value], iB=incaricoIn(cB,f,$("incarico").value);
-  const cfgB={...cfg,tabellare:tabContratto(cB,f)};
-  if(chk("cmp-pos")) cfgB.posizione=iB.min;
-  const rB=sviluppo(cfgB,chk("cmp-ivc")?cB.ivc:c.ivc,auto,cB.v[f]);
-  $("cmp-h-a").textContent=c.label.split("—")[0].trim();
-  $("cmp-h-b").textContent=cB.label.split("—")[0].trim();
-  const righe=[["Stipendio tabellare",r.tot.tab,rB.tot.tab],["IVC",r.tot.ivc,rB.tot.ivc],
-    ["Retribuzione di posizione",r.tot.pos,rB.tot.pos],
-    ["Maggiorazione convenzione"+(r.tot.detr?" (a carico ente)":""),r.tot.magg,rB.tot.magg],
-    ["TOTALE LORDO",r.tot.lordo,rB.tot.lordo]];
-  $("cmp-body").innerHTML=righe.map((x,k)=>{
-    const d=x[1]-x[2],cls=Math.abs(d)<0.005?"":(d>0?"pos":"neg"),sg=d>0?"+":"";
-    return '<tr class="'+(k===4?"tot":"")+'"><td>'+x[0]+'</td><td>'+eur(x[1])+'</td><td>'+eur(x[2])+'</td><td class="'+cls+'">'+sg+eur(d)+'</td></tr>';
-  }).join("");
-
-  ultimo2={righe:r.righe,tot:r.tot,col,dal:r.mesi[0],al:r.mesi[r.mesi.length-1],
-           contratto:c.label,fascia:"Fascia "+f,classe:incarico().label};
+  ultimo2={linee,dal:r.mesi[0],al:r.mesi[r.mesi.length-1],fascia:"Fascia "+f,classe:incarico().label};
 }
+
+/* modifica di una cella del percepito: valore vuoto o uguale al calcolato = nessuna modifica */
+function valoreCalcolato(ym,k,mod){
+  const r=Motore.periodo(cfgPeriodo(),$("dal").value,$("al").value,opzPeriodo(mod));
+  return r.righe.find(x=>x.ym===ym&&!x.tred).percepito[k];
+}
+$("pro-body").addEventListener("change",ev=>{
+  const inp=ev.target; if(!inp.classList||!inp.classList.contains("cella")) return;
+  const ym=inp.closest("tr").dataset.ym, k=inp.closest("tr").dataset.k, v=parseFloat(inp.value);
+  const senza=Motore.ripristina(modifiche,ym,k);
+  if(!isFinite(v)||Math.abs(v-valoreCalcolato(ym,k,senza))<0.005) modifiche=senza;
+  else modifiche={...senza,[ym]:{...senza[ym],[k]:Math.round(v*100)/100}};
+  calcolaPeriodo();
+});
+$("pro-body").addEventListener("click",ev=>{
+  const bt=ev.target.closest("button[data-az]"); if(!bt) return;
+  const tr=bt.closest("tr"), ym=tr.dataset.ym, k=tr.dataset.k;
+  if(bt.dataset.az==="prop") modifiche=Motore.propaga(modifiche,mesiPeriodo,ym,k,modifiche[ym][k]);
+  else modifiche=Motore.ripristina(modifiche,ym,k);
+  calcolaPeriodo();
+});
+$("btn-rip-tutto").addEventListener("click",()=>{ azzeraModifiche(); calcolaPeriodo(); });
 
 /* ===================== EXPORT ===================== */
 let ultimo1=null, ultimo2=null;
@@ -917,13 +1282,11 @@ function csv1(){
 }
 function csv2(){
   if(!ultimo2) return;
-  const col=ultimo2.col;
-  let o="Sviluppo mensile;"+ultimo2.dal+" - "+ultimo2.al+"\r\n"+ultimo2.contratto+"\r\n"+ultimo2.fascia+";"+ultimo2.classe+"\r\n\r\n";
-  o+="Mese;"+col.map(c=>c.t).join(";")+"\r\n";
-  ultimo2.righe.forEach(m=>{
-    o+=(m.tred?"13a mensilita "+m.ym.split("-")[0]:m.ym)+";"+col.map(c=>num(m[c.k])).join(";")+"\r\n";
+  let o="Sviluppo mensile;"+ultimo2.dal+" - "+ultimo2.al+"\r\n"+ultimo2.fascia+";"+ultimo2.classe+"\r\n\r\n";
+  o+="Mese;Voce;Dovuto;Percepito;Differenza\r\n";
+  ultimo2.linee.forEach(l=>{
+    o+=l.csvMese+";"+l.csvVoce+";"+(l.d===null?"":num(l.d))+";"+(l.p===null?"":num(l.p))+";"+num(l.df)+"\r\n";
   });
-  o+="TOTALE;"+col.map(c=>num(ultimo2.tot[c.tot])).join(";")+"\r\n";
   scarica("sviluppo_mensile_segretario.csv",o);
 }
 function copia(){
@@ -935,11 +1298,133 @@ function copia(){
   });
 }
 
+/* ===================== PRATICA ===================== */
+/* stato completo delle due pagine, nella forma attesa da Motore.serializzaPratica */
+function leggiStato(){
+  return {
+    contratto:$("contratto").value, fascia:$("fascia").value, classe:$("incarico").value,
+    ivcScelta:$("ivc-sel").value, ivcValore:val("ivc-val"), tabellare:val("tabellare"),
+    posizione:val("posizione"), ria:val("ria"), maturato:val("maturato"), maggPos:val("magg-pos"), posEQ:val("pos-dir"),
+    perc:val("perc"), mensilita:parseInt($("mensilita").value,10),
+    base:{ria:chk("b-ria"), mat:chk("b-mat"), pos:chk("b-pos"), magg:chk("b-magg"), gall:chk("b-gall")},
+    gallCap:chk("gall-cap"), incr15:chk("incr15"),
+    riparto:{tipo:$("magg-altri-tipo").value, valore:val("magg-altri")},
+    enti:enti.map(e=>({nome:e.nome, ab:e.ab})),
+    dal:$("dal").value, al:$("al").value, regimePercepito:$("regime-perc").value, emolumento2023:val("emolumento"),
+    modifiche:JSON.parse(JSON.stringify(modifiche))
+  };
+}
+/* prima i campi (i gestori di fascia, classe e periodo azzerano le modifiche), poi le modifiche */
+function applicaStato(s){
+  $("contratto").value=s.contratto; $("fascia").value=s.fascia;
+  popolaIncarichi(s.classe); $("incarico").value=s.classe;
+  ivcSetCorrente=null; popolaIVC();
+  applicaTabellare(); $("tabellare").value=String(s.tabellare); applicaTabellareHint();
+  $("ivc-sel").value=s.ivcScelta; if(s.ivcScelta==="man") $("ivc-val").value=String(s.ivcValore); aggiornaIVCCampo();
+  $("ria").value=String(s.ria); $("maturato").value=String(s.maturato); $("magg-pos").value=String(s.maggPos); $("pos-dir").value=String(s.posEQ);
+  $("perc").value=String(s.perc); $("mensilita").value=String(s.mensilita);
+  $("b-ria").checked=s.base.ria; $("b-mat").checked=s.base.mat; $("b-pos").checked=s.base.pos; $("b-magg").checked=s.base.magg; $("b-gall").checked=s.base.gall;
+  $("gall-cap").checked=s.gallCap; $("incr15").checked=s.incr15;
+  $("posizione").value=String(s.posizione); aggiornaPosizione(false);
+  $("magg-altri-tipo").value=s.riparto.tipo; $("magg-altri").value=String(s.riparto.valore); aggiornaMaggAltri();
+  enti=s.enti.map(e=>({nome:e.nome, ab:e.ab})); renderEnti();
+  $("dal").value=s.dal; $("al").value=s.al; $("regime-perc").value=s.regimePercepito; $("emolumento").value=String(s.emolumento2023);
+  modifiche=JSON.parse(JSON.stringify(s.modifiche));
+  calcola();
+}
+/* applica lo stato; se qualcosa va storto riporta la pagina com'era, mai a metà */
+function applicaStatoSicuro(s){
+  const prima=leggiStato();
+  try{ applicaStato(s); return true; }
+  catch(e){ try{ applicaStato(prima); }catch(e2){} return false; }
+}
+function messaggioPratica(tipo,titolo,righe){
+  const box=$("pratica-msg"); box.innerHTML="";
+  if(!titolo) return;
+  const n=document.createElement("div"); n.className="note "+tipo;
+  const b=document.createElement("b"); b.textContent=titolo; n.appendChild(b);
+  if(righe&&righe.length){
+    const ul=document.createElement("ul");
+    righe.slice(0,8).forEach(r=>{ const li=document.createElement("li"); li.textContent=r; ul.appendChild(li); });
+    if(righe.length>8){ const li=document.createElement("li"); li.textContent="… e altri "+(righe.length-8)+" problemi."; ul.appendChild(li); }
+    n.appendChild(ul);
+  }
+  box.appendChild(n);
+}
+const nomeFile=nome=>"pratica"+(nome?"-"+nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40):"")+"-"+new Date().toISOString().slice(0,10)+".json";
+function salvaPratica(){
+  const nome=$("pratica-nome").value.trim();
+  const file=Motore.serializzaPratica(leggiStato(),{nomePratica:nome});
+  const v=Motore.validaPratica(file);
+  if(!v.ok){ messaggioPratica("err","Pratica non salvata: alcuni valori non sono validi.",v.errori); return; }
+  const b=new Blob([JSON.stringify(file,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download=nomeFile(nome); a.click(); URL.revokeObjectURL(a.href);
+  messaggioPratica("ok","Pratica scaricata: "+a.download+".",[]);
+}
+const MAX_FILE=1024*1024;
+function apriPratica(file){
+  if(!file) return;
+  if(file.size>MAX_FILE){ messaggioPratica("err","File non aperto: troppo grande per essere una pratica.",[]); return; }
+  file.text().then(testo=>{
+    let dati;
+    try{ dati=JSON.parse(testo); }
+    catch(e){ messaggioPratica("err","File non aperto: non è un file JSON valido.",[]); return; }
+    const r=Motore.validaPratica(dati);
+    if(!r.ok){ messaggioPratica("err","File non aperto: la pratica non è valida. La pagina non è stata modificata.",r.errori); return; }
+    if(!applicaStatoSicuro(r.stato)){ messaggioPratica("err","File non aperto: errore nell'applicare la pratica. La pagina è tornata com'era.",[]); return; }
+    $("pratica-nome").value=r.nomePratica;
+    messaggioPratica(r.avvisi.length?"warn":"ok","Pratica "+(r.nomePratica?"«"+r.nomePratica+"» ":"")+"aperta.",r.avvisi);
+    programmaBozza();
+  },()=>messaggioPratica("err","File non aperto: impossibile leggerlo.",[]));
+}
+$("btn-salva-pratica").addEventListener("click",salvaPratica);
+$("btn-apri-pratica").addEventListener("click",()=>$("file-pratica").click());
+$("file-pratica").addEventListener("change",ev=>{ const f=ev.target.files[0]; ev.target.value=""; apriPratica(f); });
+
+/* bozza automatica: stesso stato in localStorage, ogni accesso in try/catch (può essere bloccato o assente) */
+const CHIAVE_BOZZA="convenzione-segretario:bozza";
+let bozzaAttiva=false, timerBozza=null;
+function leggiBozza(){
+  try{
+    const t=localStorage.getItem(CHIAVE_BOZZA); if(!t) return null;
+    const dati=JSON.parse(t), r=Motore.validaPratica(dati);
+    if(r.ok) return {r,quando:dati.salvataIl};
+    cancellaBozza();
+  }catch(e){}
+  return null;
+}
+function cancellaBozza(){ try{ localStorage.removeItem(CHIAVE_BOZZA); }catch(e){} }
+function salvaBozza(){
+  try{
+    const f=Motore.serializzaPratica(leggiStato(),{nomePratica:$("pratica-nome").value.trim()});
+    if(Motore.validaPratica(f).ok) localStorage.setItem(CHIAVE_BOZZA,JSON.stringify(f));
+  }catch(e){}
+}
+function programmaBozza(){
+  if(!bozzaAttiva) return;
+  clearTimeout(timerBozza); timerBozza=setTimeout(salvaBozza,600);
+}
+$("pratica-nome").addEventListener("input",programmaBozza);
+function offriBozza(){
+  const b=leggiBozza();
+  if(!b){ bozzaAttiva=true; return; }
+  const q=new Date(b.quando), quando=isNaN(q)?"":" del "+q.toLocaleString("it-IT",{dateStyle:"short",timeStyle:"short"});
+  $("bozza-testo").textContent="Trovata una bozza"+quando+(b.r.nomePratica?" («"+b.r.nomePratica+"»)":"")+". Finché non scegli, le modifiche non vengono salvate in bozza.";
+  $("bozza").hidden=false;
+  $("bozza-ripristina").onclick=()=>{
+    $("bozza").hidden=true;
+    if(applicaStatoSicuro(b.r.stato)){ $("pratica-nome").value=b.r.nomePratica; messaggioPratica("ok","Bozza ripristinata.",[]); }
+    else messaggioPratica("err","Bozza non ripristinabile: la pagina è tornata com'era.",[]);
+    bozzaAttiva=true; salvaBozza();
+  };
+  $("bozza-scarta").onclick=()=>{ $("bozza").hidden=true; cancellaBozza(); bozzaAttiva=true; };
+}
+
 /* ===================== EVENTI ===================== */
 function cambioContratto(){ popolaIncarichi(); popolaIVC(); applicaTabellare(); aggiornaPosizione(true); calcola(); }
 $("contratto").addEventListener("change",cambioContratto);
-$("fascia").addEventListener("change",cambioContratto);
-$("incarico").addEventListener("change",()=>{aggiornaPosizione(true);calcola();});
+$("fascia").addEventListener("change",()=>{azzeraModifiche();cambioContratto();});
+$("incarico").addEventListener("change",()=>{azzeraModifiche();aggiornaPosizione(true);calcola();});
 $("ivc-sel").addEventListener("change",()=>{aggiornaIVCCampo();calcola();});
 $("ivc-val").addEventListener("input",()=>{$("ivc-hint").textContent="Voce 53 · "+eur(val("ivc-val"))+"/mese → "+eur(val("ivc-val")*MENS)+" annui";calcola();});
 $("posizione").addEventListener("input",()=>{$("posizione-range").value=val("posizione");calcola();});
@@ -962,12 +1447,15 @@ function aggiornaMaggAltri(){
 $("magg-altri-tipo").addEventListener("change",()=>{aggiornaMaggAltri();calcola();});
 ["b-ria","b-mat","b-pos","b-magg","b-gall","gall-cap","mensilita"].forEach(id=>$(id).addEventListener("change",()=>{aggiornaPosizione(false);calcola();}));
 $("incr15").addEventListener("change",()=>{aggiornaPosizione(false);calcola();});
-["dal","al","ivc-auto","cmp-pos","cmp-ivc","contratto-b"].forEach(id=>$(id).addEventListener("change",calcolaPeriodo));
+["dal","al"].forEach(id=>$(id).addEventListener("change",()=>{azzeraModifiche();calcolaPeriodo();}));
+$("regime-perc").addEventListener("change",calcolaPeriodo);
+$("emolumento").addEventListener("input",calcolaPeriodo);
 document.querySelectorAll("[data-preset]").forEach(b=>b.addEventListener("click",()=>{
   const d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),p=b.dataset.preset;
   if(p==="anno"){$("dal").value=y+"-01";$("al").value=y+"-12";}
   else if(p==="12m"){const d2=new Date(y,d.getMonth()-11,1);$("dal").value=d2.getFullYear()+"-"+String(d2.getMonth()+1).padStart(2,"0");$("al").value=y+"-"+m;}
   else{$("dal").value=y+"-"+m;$("al").value=y+"-"+m;}
+  azzeraModifiche();
   calcolaPeriodo();
 }));
 $("add-ente").addEventListener("click",()=>{enti.push({nome:"Nuovo ente",ab:0});renderEnti();calcola();});
@@ -976,7 +1464,10 @@ $("btn-print2").addEventListener("click",()=>window.print());
 $("btn-csv").addEventListener("click",csv1);
 $("btn-csv2").addEventListener("click",csv2);
 $("btn-copy").addEventListener("click",copia);
-$("btn-reset").addEventListener("click",()=>{if(confirm("Azzerare tutti i dati?"))location.reload();});
+$("btn-reset").addEventListener("click",()=>{
+  if(!confirm("Azzerare tutti i dati? Anche la bozza salvata nel browser verrà cancellata.")) return;
+  clearTimeout(timerBozza); bozzaAttiva=false; cancellaBozza(); location.reload();
+});
 
 /* tab */
 [["tab-1","page-1"],["tab-2","page-2"]].forEach(([t,p],idx)=>{
@@ -1001,6 +1492,7 @@ $("pos-dir").value="13499.98";
 aggiornaMaggAltri();
 renderEnti();
 calcola();
+offriBozza();
 </script>
 </body>
 </html>
