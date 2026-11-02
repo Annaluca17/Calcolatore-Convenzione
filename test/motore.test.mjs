@@ -457,3 +457,14 @@ test("posizione sopra il minimo nel CCNL 2022-2024: prima del 2024 si toglie l'i
   assert.equal(Motore.dovuto(b, "2024-01").pos, 825.23);   // 10.728 / 13
   assert.equal(Motore.dovuto(b, "2023-01").pos, 769.23);   // 10.000 / 13
 });
+
+test("fino al 2020 vale il valore unico della classe se la scheda 1 è su un contratto con minimo e massimo", () => {
+  const b = cfg({ contratto: "c2019c", posizione: 8646.01 });
+  assert.equal(Motore.dovuto(b, "2020-06").pos, 602.89);   // 7.837,59 / 13, nessun salto
+  assert.equal(Motore.dovuto(b, "2021-01").pos, 665.08);   // 8.646,01 / 13
+  const b24 = cfg({ contratto: "c2022", posizione: 10728 });
+  assert.equal(Motore.dovuto(b24, "2019-01").pos, 602.89);
+  assert.equal(Motore.percepito(b24, "2023-01").pos, 602.89);  // percepito 2016-2018 fino al 07/2024
+  // con la scheda 1 su un contratto a valore unico il valore inserito resta com'è
+  assert.equal(Motore.dovuto(cfg({ contratto: "c2016", posizione: 8000 }), "2019-01").pos, 615.38);
+});
