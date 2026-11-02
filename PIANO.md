@@ -50,7 +50,8 @@ Dopo ogni ticket, copiare `index.html` in
 11. **Salva / apri pratica** in JSON (nome pratica libero, nessun codice fiscale)
     + bozza automatica in localStorage (in try/catch).
 12. **Pagina pulita**: niente riferimenti normativi né codici voce visibili;
-    avvisi in una riga con link "perché?" al paragrafo della guida. Export CSV.
+    avvisi in una riga, **senza link** (la guida T2 è rinviata). Export CSV
+    compreso. *(fatto, T6)*
 13. **GUIDA.md** riscritta da zero (normativa, voci, controlli; niente Halley),
     scavalco verificato sull'art. 62. PDF e vecchia guida .md in
     `Progetti Immedia/_archivio/2026-10-13/` con `LEGGIMI.md`.
@@ -65,7 +66,7 @@ Dopo ogni ticket, copiare `index.html` in
 | T3 | Motore del periodo: dovuto per decorrenza, posizione, galleggiamento EQ, ratei 13ª, emolumento 12/2023, riparto | T1 | fatto |
 | T4 | Prospetto differenze: tabella dovuto/percepito/differenza, celle modificabili, subtotali anno, CSV | T3 | fatto |
 | T5 | Salva/apri pratica JSON + bozza | T4 | fatto |
-| T6 | Pagina pulita: via norme e codici, avvisi brevi con link alla guida | T2, T5 | da fare |
+| T6 | Pagina pulita: via norme e codici, avvisi brevi senza link | T5 | fatto |
 
 T3→T6 toccano tutti `index.html`: vanno eseguiti **in sequenza**, non in parallelo.
 T2 può girare in parallelo a T3.
@@ -86,9 +87,18 @@ ogni riga ha `dovuto`, `percepito`, `diff` per voce.
 - **Percepito**: per default il contratto precedente a ogni rinnovo, fino al mese
   successivo alla firma (2016‑18 fino al 07/2024, 2019‑21 fino al 02/2026, poi
   2022‑24), con l'IVC del suo set; oppure un contratto scelto per tutto il periodo.
-- **Posizione**: `cfg.posizione` è quella in godimento prima dei rinnovi. Per
-  ogni rinnovo raggiunto dal regime: + `incr` (solo 2024) e poi minimo se sotto.
-  Il percepito usa la stessa regola per il regime che applica.
+- **Posizione**: `cfg.posizione` è quella attribuita nel contratto della scheda 1
+  (`cfg.contratto`; se manca, 2016‑18). *(corretto il 02/11/2026: prima era letta
+  come «in godimento prima dei rinnovi», e il minimo 2024 della B2, 9.374, nel
+  dovuto diventava 10.102.)* `posizioneDiPartenza` la riporta prima dei rinnovi:
+  se è al minimo del suo contratto → minimo del contratto precedente, altrimenti
+  − `incr`. Poi, per ogni rinnovo raggiunto dal regime: + `incr` (solo 2024) e
+  minimo se sotto. Una posizione al minimo resta al minimo in ogni regime. Il
+  percepito usa la stessa regola per il regime che applica.
+  *Da decidere:* una posizione sopra il minimo 2021 (es. B2 a 8.646,01) all'indietro
+  resta invariata, quindi nel 2016‑20 vale 8.646,01 e non 7.837,59: a un centesimo
+  dal minimo il dovuto 2016‑20 salta di ~808 €/anno. Va scelta la regola per le
+  posizioni graduate sopra il minimo nei regimi a valore unico.
 - **Galleggiamento** = EQ − (posizione + maggiorazione di posizione), con
   massimale opzionale; ricalcolato in ogni mese su entrambi i lati.
 - **13ª** = 1/12 della somma delle voci dei mesi dell'anno nel periodo, esposta a
@@ -194,3 +204,95 @@ Barra «Pratica» sopra le due pagine: nome libero, **Salva pratica**, **Apri pr
   hash del testo identico.
 - **Limiti noti**: la barra pratica è sopra entrambe le pagine, non nella stampa; il CSV non segna le celle modificate
   (come in T4); aprire una pratica non risolve un banner di bozza ancora in attesa. Nessun riferimento normativo nuovo (T6).
+
+## T6 — pagina pulita (13/10/2026)
+
+Eseguito **senza GUIDA.md** (T2 rinviato): nessun link «perché?», gli avvisi sono una riga.
+Test: `node --test`, ora 50 casi (2 sulla posizione aggiunti il 02/11/2026); i 5 nuovi (`test/pagina-pulita.test.mjs`) cercano nel testo
+che l'utente vede o scarica (tutto `index.html` meno i commenti) codici voce, riferimenti
+normativi, link, date di firma tra parentesi e la presenza dei nomi del glossario. Scritti prima
+delle modifiche (rossi), poi verdi.
+
+- **Tolto**: la sezione a scomparsa «Valori tabellari e riferimenti normativi», il paragrafo sul
+  riparto, le note sotto le opzioni della base, i riferimenti in note dei contratti, suggerimenti e
+  avvisi. Tutto il testo è in «Materiale per la guida (T2)», in fondo a questo file.
+- **Nomi**: V.50 → Stipendio tabellare, V.92 → Posizione conglobata, V.53 → IVC, V.60 → Retribuzione
+  di posizione, V.107 → Galleggiamento, V.79 → Maggiorazione di convenzione. Vale per prospetto,
+  controllo cedolino, righe del prospetto differenze, totali e CSV. La colonna «Riferimento» è ora
+  «Nota» (fascia, mensilità, «maggiorazione unica»; vuota dove non serve). «Posizione dirigenziale/EQ»
+  è «Posizione EQ» (decisione 14). Il nome del contratto non porta più la data di firma.
+- **Avvisi**: una riga ciascuno, senza norme (es. «Galleggiamento escluso dalla base: di norma va
+  incluso (differenza X/mese)»). Soglie e controlli invariati: cambia solo il testo.
+- **Schermo stretto**: sotto 560 px margini ridotti, schede a larghezza piena, KPI più piccoli,
+  colonna «Nota» nascosta nel prospetto della scheda 1, prima colonna del prospetto differenze che va
+  a capo, celle del percepito da 78 px. **Stampa**: le righe non si spezzano a metà pagina e
+  l'intestazione si ripete; il resto (barra pratica e pulsanti nascosti) era già a posto.
+- **Verifica nel browser**: pagine 1 e 2 a 513 px; stampa simulata applicando le regole `@media print`
+  a 794 px (nessuna barra di scorrimento, tabella intera). Scansione del testo generato su 5 contratti ×
+  3 fasce × 9 varianti di opzioni e avvisi (circa 10 MB di HTML) e dei due CSV: nessun codice voce né
+  riferimento. **Non provata** la stampa vera (anteprima di stampa o PDF dal browser).
+- **Resta**: il suggerimento «Da 10% a 50%» sulla maggiorazione della posizione (senza norma);
+  la copia in `calcolo convenzione segretario/` è identica a `index.html`.
+
+## Materiale per la guida (T2)
+
+Testi normativi e spiegazioni **tolti da `index.html` in T6** (13/10/2026), riportati
+come stavano, per non perderli. Serviranno a scrivere GUIDA.md. Prima di riusarli:
+verificare ogni riferimento sul testo (alcuni sono di prassi o di pareri, non del CCNL).
+
+### Intestazione e note dei contratti
+
+- Sottotitolo: «Maggiorazione art. 63 CCNL 16.07.2024 (già art. 105 c. 1 lett. h CCNL 17.12.2020) · tabellari e IVC 2016‑2024».
+- Nome del contratto 2016‑2018: «CCNL 2016‑2018 (17.12.2020)».
+- Nota CCNL 2016‑2018: «Tabellare € 45.260,77 annui (fasce A‑B) e 80% per la fascia C. Retribuzione di posizione in valore unico, invariata dal 1.1.2016 al 31.12.2020, con maggiorazione 10%÷50% (CCNI 22.12.2003).»
+- Nota CCNL 2019‑2021 dal 1.1.2019: «Primo incremento art. 57 (€ 80/mese A‑B, € 64/mese C): tabellare € 46.300,77 annui. Posizione ancora nei valori 2016‑2020.»
+- Nota CCNL 2019‑2021 dal 1.1.2021: «Incremento a regime (€ 135/mese A‑B, € 108/mese C): tabellare € 47.015,77 annui (C € 37.612,59). Posizione con minimo e massimo (artt. 58 e 60).»
+
+### Suggerimenti e note dei campi
+
+- Maggiorazione della posizione (%): «Art. 41 c. 4 CCNL 2001 — 10%÷50%, se ancora corrisposta».
+- Quota già corrisposta da altri enti: «Da convenzione o dal cedolino dell'altro ente (voce 79)».
+- Paragrafo sotto il riparto: «La maggiorazione è **unica** e spetta a prescindere dal numero dei comuni convenzionati: si calcola una sola volta sulla retribuzione in godimento e il relativo onere è **ripartito fra gli enti** secondo la convenzione (art. 10 DPR 465/1997). Quanto già corrisposto dagli altri enti si detrae quindi da quanto dovuto dall'ente qui calcolato.»
+- Mensilità: «13 mensilità — con rateo in 13ª (ARAN SEG_032)».
+- Base, maggiorazione della posizione: «ARAN AFL4 del 24.03.2021: va computata nella base del 25%. Conforme anche all'art. 105 CCNL 17.12.2020, che considera la posizione «compresa la maggiorazione ove attribuita dall'Ente».»
+- Base, galleggiamento: «Incluso: per l'ARAN non è una voce autonoma ma «parte costitutiva della retribuzione di posizione» richiamata dall'art. 63 lett. c). Deselezionare solo per riprodurre calcoli impostati diversamente.»
+- Pagina 2, periodo: «Usa fascia, classe e voci della scheda 1; la posizione indicata è quella in godimento prima dei rinnovi. Il dovuto applica a ogni mese il contratto in vigore per decorrenza; la 13ª è calcolata a ratei ed esposta a dicembre o nell'ultimo mese.»
+- Pagina 2, sotto il prospetto: «Per ogni mese: dovuto, percepito e differenza di ogni voce valorizzata; riga in corsivo = 13ª a ratei (si ricalcola dai mesi). Il percepito è precalcolato e ogni cella si può correggere dove il cedolino reale diverge: la cella modificata è evidenziata, ↓ propaga copia il valore sui mesi successivi, ↺ ripristina torna al calcolato. La maggiorazione modificata a mano non si ricalcola; se cambia la base, quella non toccata sì. Le modifiche restano finché non cambi fascia, classe o periodo. Per la stampa conviene impostare il foglio in orizzontale.»
+
+### Colonna «Riferimento» del prospetto e controllo cedolino
+
+- Tabellare: «V.50 · fascia B» · posizione conglobata: «V.92 · segr. 8‑9» · IVC: «V.53» · posizione attribuita: «V.60» · maggiorazione della posizione: «art. 41 c. 4» · galleggiamento: «V.107» · base: «art. 63 · retribuzione mensile in godimento» · maggiorazione: «art. 63 · maggiorazione unica» e «V.79 · 13 mensilità» · quota altri enti: «riparto convenzione · X%» / «importo comunicato dall'ente convenzionato».
+- Controllo: «V.50 (+ V.92) + V.53 + V.60 + V.79 = lordo mensile del cedolino.» Righe del cedolino: V.50 Stipendio tabellare, V.92 Posizione conglobata, V.53 IVC, V.60 Retribuzione di posizione (incl. magg. e gall.), V.79 Indennità di convenzione.
+- Etichette del prospetto differenze e del CSV: V.50 Stipendio, V.92 Conglobata, V.53 IVC, V.60 Posizione, V.107 Galleggiam., V.79 Maggiorazione.
+- Altri: «Voce 53 · X/mese → Y annui»; «Importo mensile della voce 79 già erogata dall'altro ente».
+
+### Avvisi (testo lungo, sostituito da una riga)
+
+- Posizione 2016‑2020 diversa: «Nel regime 2016‑2020 la classe «…» valeva X: lo scostamento va giustificato da maggiorazione, galleggiamento o CCNI territoriale.»
+- Galleggiamento escluso: «Il galleggiamento è escluso dalla base (opzione avanzata): per l'ARAN è invece parte costitutiva della retribuzione di posizione richiamata dall'art. 63 lett. c) e va computato. Differenza sulla maggiorazione: X/mese.»
+- Riparto: «Maggiorazione unica di X/mese: dedotta la quota di Y/mese già corrisposta dagli altri enti convenzionati, a carico di questo ente restano Z/mese. Verificare la corrispondenza con il riparto degli oneri stabilito dalla convenzione.»
+- Importo altri enti oltre la maggiorazione: «…la detrazione è stata limitata a quest'ultima e la voce 79 risulta azzerata. Verificare le basi di calcolo usate dall'altro ente.»
+- 12 mensilità: «Maggiorazione corrisposta su 12 mensilità: per l'ARAN (parere SEG_032) è trattamento stipendiale e va computata anche nella 13ª. Differenza annua: X.»
+- Maggiorazione della posizione esclusa: «…difforme dall'orientamento ARAN AFL4 del 24.03.2021, che la include.»
+- Tabellare diverso: «Il tabellare annuo inserito (X) non corrisponde al tabellare di fascia F del contratto (Y).»
+
+### Sezione «Valori tabellari e riferimenti normativi» (a scomparsa, scheda 1)
+
+**Stipendio tabellare mensile (voce 50, 13 mensilità)** — dalle tabelle stipendiali dell'ente: CCNL 2016‑2018 → A € 3.481,60 · B € 3.250,22 + € 231,38 (voce 92, posizione conglobata) · C € 2.785,28; CCNL 2019‑2021 → A € 3.616,60 · B € 3.385,22 + 231,38 · C € 2.893,28; CCNL 2022‑2024 → A € 3.846,60 · B € 3.615,22 + 231,38 · C € 3.077,28. Riscontro: art. 57 CCNL 16.07.2024 (incrementi 80 → 124 → 135 € per A‑B e 64 → 99 → 108 € per C su base € 45.260,77; valore a regime € 47.015,77, fascia C € 37.612,59).
+
+**IVC (voce 53)** — importi mensili per fascia e decorrenza dalle tabelle stipendiali. Anticipazione ex art. 47‑bis c. 2 D.lgs. 165/2001. La voce 119 «una tantum 1,5% L. 197/2022» (marzo‑dicembre 2023) non concorre alla base.
+
+**Retribuzione di posizione 2016‑2020** (annui, 13 mensilità, invariati dal 1.1.2016): A € 39.857,92 / 33.143,98 / 21.781,93; B € 15.584,45 / 7.837,59; C € 7.332,22.
+**Dal 1.1.2021** (artt. 58 e 60 CCNL 16.07.2024, minimo–massimo): A 43.054,00–64.486,96 / 35.590,00–53.665,99 / 23.518,00–35.912,97; B 16.806,00–26.102,22 / 8.646,00–14.068,80; C 8.140,00–10.928,87. Massimo elevabile fino al +15% nei capoluoghi, province e città metropolitane (art. 60 c. 3).
+
+**Base della maggiorazione** — art. 63 CCNL 16.07.2024 (già art. 45 CCNL 16.05.2001): il 25% si calcola sulla retribuzione mensile in godimento relativa a trattamento stipendiale, RIA ove acquisita, retribuzione di posizione e maturato economico annuo. La retribuzione di posizione va assunta per intero, comprensiva della maggiorazione ex art. 41 c. 4 (ARAN AFL4 del 24.03.2021) e del galleggiamento, che per l'ARAN «non costituisce una voce a parte, essendo invece parte costitutiva della retribuzione di posizione». Restano fuori la retribuzione di risultato, i diritti di rogito e le altre voci accessorie non elencate. La maggiorazione spetta a prescindere dal numero dei comuni convenzionati.
+
+**Mensilità** — la maggiorazione è una «retribuzione mensile aggiuntiva» calcolata sulla retribuzione mensile in godimento (annuo ÷ 13). Avendo natura di trattamento stipendiale e non accessorio, secondo il parere ARAN SEG_032 «nella determinazione dell'ammontare della tredicesima mensilità del segretario incaricato di segreteria convenzionata deve tenersi conto anche del rateo relativo alla retribuzione aggiuntiva»: è quindi corrisposta per 13 mensilità. L'importo annuo coincide con il 25% della retribuzione annua in godimento delle voci di base.
+
+**Riparto fra gli enti convenzionati** — la maggiorazione è unica: si calcola una sola volta sulla retribuzione mensile in godimento del segretario e spetta a prescindere dal numero dei comuni convenzionati, senza moltiplicarsi per ciascun ente. L'onere complessivo del trattamento economico è ripartito fra gli enti secondo quanto stabilito dalla convenzione (art. 10 DPR 465/1997), di regola in proporzione al tempo di servizio prestato presso ciascuno. Se un altro ente della convenzione corrisponde già una quota della maggiorazione sul proprio cedolino, quella quota si detrae da quanto dovuto dall'ente per il quale si effettua il calcolo, che resta obbligato per la sola differenza. La detrazione presuppone che l'altro ente calcoli la maggiorazione sulle medesime voci di base: importi divergenti vanno riconciliati prima di essere portati in deduzione.
+
+**Galleggiamento** — art. 41 c. 5 CCNL 16.05.2001, confermato dall'art. 111 c. 1 lett. b) CCNL 17.12.2020 e dall'art. 60 CCNL 2024: la posizione del segretario non può essere inferiore a quella della funzione dirigenziale più elevata dell'ente o, in assenza di dirigenti, della più elevata EQ. Massimali di prassi € 3.008,00 (A‑B) e € 1.964,00 (C). *(Decisione 14: negli enti seguiti il raffronto è solo con l'EQ.)*
+
+**TFS/TFR** — Msg. INPS 1272/2023: per fascia A o B in enti oltre 10.000 ab. la posizione è valutabile per intero; per fascia B tra 3.000 e 10.000 ab. nei limiti dell'indennità di direzione al 30.11.1995 (€ 1.032,91 / 2.065,83 / 3.098,74).
+
+**Avvertenza** — strumento di supporto: verificare con la convenzione approvata, la delibera di graduazione della posizione e le tabelle stipendiali aggiornate. *(Resta in pagina, nel piè di pagina, in forma breve.)*
