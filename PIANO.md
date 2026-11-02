@@ -27,6 +27,12 @@ Dopo ogni ticket, copiare `index.html` in
 
 1. **V.92** è una quota interna al tabellare di fascia B: V.50 + V.92 = tabellare
    di fascia. Fascia B 2022‑24 = 3.615,22 + 231,38. *(fatto, T1)*
+   **Verificato il 02/11/2026:** conglobamento di € 3.008 annui (= 231,38 × 13) dal
+   CCNL 1.3.2011, confermato dall'art. 111 punto B del CCNL 17.12.2020; il messaggio
+   INPS 1272/2023 lo usa per il TFS della fascia B 3.000‑10.000 ab. La tabella Halley
+   «Segretario B 2022‑2024» (stampa del 12/08/2026) ha V.50 = 3.846,60 **e** V.92 =
+   231,38: totale 4.077,98, cioè 231,38 al mese in più del tabellare CCNL. La V.50
+   corretta è 3.615,22. Le tabelle B 2016‑18 (3.250,22) e 2019‑21 (3.385,22) sono giuste.
 2. **Controllo**: errore se il tabellare inserito ≠ tabellare CCNL della fascia. *(fatto, T1)*
 3. **Posizione 2024**: `POS_2024` dall'art. 38, con `incr` dell'art. 36. *(fatto, T1)*
 4. **Dovuto**: regime scelto per decorrenza mese per mese (2016‑18 → 2019 → 2020 →
