@@ -608,7 +608,9 @@ function regimeDovuto(ym){
    a ogni rinnovo raggiunto dal regime, si aggiunge l'incremento contrattuale (incr) e,
    se resta sotto, si porta al nuovo minimo. Dal 1.1.2021 (art. 58 CCNL 16.07.2024) i
    valori sono solo rideterminati, senza incremento; dal 1.1.2024 incremento art. 36
-   CCNL 23.02.2026. Una posizione al minimo del suo contratto resta al minimo in ogni regime. */
+   CCNL 23.02.2026. Una posizione al minimo del suo contratto resta al minimo in ogni regime.
+   Nei regimi a valore unico (fino al 2020) vale il valore della classe: il valore inserito
+   si usa così com'è solo se anche il contratto della scheda 1 è a valore unico. */
 const RINNOVI_POSIZIONE=["c2019c","c2022"];
 const PRIMA_DEL_RINNOVO={c2019c:"c2019b",c2022:"c2019c"};
 function posizioneDiPartenza(cfg){
@@ -621,6 +623,8 @@ function posizioneDiPartenza(cfg){
   return p;
 }
 function posizioneNelRegime(cfg,contratto){
+  const c=CONTRATTI[contratto], partenza=CONTRATTI[cfg.contratto]||CONTRATTI.c2016;
+  if(c.posTipo==="unico") return partenza.posTipo==="unico" ? cfg.posizione : incaricoIn(c,cfg.fascia,cfg.classe).min;
   let p=posizioneDiPartenza(cfg);
   for(const k of RINNOVI_POSIZIONE.slice(0,RINNOVI_POSIZIONE.indexOf(contratto)+1)){
     const cl=incaricoIn(CONTRATTI[k],cfg.fascia,cfg.classe);

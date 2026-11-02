@@ -95,10 +95,12 @@ ogni riga ha `dovuto`, `percepito`, `diff` per voce.
   − `incr`. Poi, per ogni rinnovo raggiunto dal regime: + `incr` (solo 2024) e
   minimo se sotto. Una posizione al minimo resta al minimo in ogni regime. Il
   percepito usa la stessa regola per il regime che applica.
-  *Da decidere:* una posizione sopra il minimo 2021 (es. B2 a 8.646,01) all'indietro
-  resta invariata, quindi nel 2016‑20 vale 8.646,01 e non 7.837,59: a un centesimo
-  dal minimo il dovuto 2016‑20 salta di ~808 €/anno. Va scelta la regola per le
-  posizioni graduate sopra il minimo nei regimi a valore unico.
+  **Regimi a valore unico** (fino al 2020; deciso il 02/11/2026): vale sempre il
+  valore della classe (B2: 7.837,59); ciò che supera il minimo riguarda solo i
+  regimi con minimo e massimo, e prima del 2021 si paga solo con la maggiorazione
+  di posizione in %. Il valore inserito si usa com'è solo se anche il contratto
+  della scheda 1 è a valore unico. Evita il salto di ~808 €/anno che c'era con
+  una posizione a un centesimo sopra il minimo 2021.
 - **Galleggiamento** = EQ − (posizione + maggiorazione di posizione), con
   massimale opzionale; ricalcolato in ogni mese su entrambi i lati.
 - **13ª** = 1/12 della somma delle voci dei mesi dell'anno nel periodo, esposta a
@@ -208,7 +210,7 @@ Barra «Pratica» sopra le due pagine: nome libero, **Salva pratica**, **Apri pr
 ## T6 — pagina pulita (13/10/2026)
 
 Eseguito **senza GUIDA.md** (T2 rinviato): nessun link «perché?», gli avvisi sono una riga.
-Test: `node --test`, ora 50 casi (2 sulla posizione aggiunti il 02/11/2026); i 5 nuovi (`test/pagina-pulita.test.mjs`) cercano nel testo
+Test: `node --test`, ora 51 casi (3 sulla posizione aggiunti il 02/11/2026); i 5 nuovi (`test/pagina-pulita.test.mjs`) cercano nel testo
 che l'utente vede o scarica (tutto `index.html` meno i commenti) codici voce, riferimenti
 normativi, link, date di firma tra parentesi e la presenza dei nomi del glossario. Scritti prima
 delle modifiche (rossi), poi verdi.
