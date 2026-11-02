@@ -440,3 +440,20 @@ test("nomePratica assente = vuoto; nome lungo rifiutato", () => {
   assert.equal(r.ok, true); assert.equal(r.nomePratica, "");
   rifiuta(apri((f) => { f.nomePratica = "x".repeat(201); }), /nome/i);
 });
+
+test("posizione al minimo nel contratto della scheda 1: resta al minimo in ogni regime", () => {
+  // fascia B, classe B2, scheda 1 sul CCNL 2022-2024 con il minimo 9.374
+  const b = cfg({ contratto: "c2022", posizione: 9374 });
+  assert.equal(Motore.dovuto(b, "2024-01").pos, 721.08);   // 9.374 / 13, senza incremento art. 36
+  assert.equal(Motore.dovuto(b, "2022-06").pos, 665.08);   // 8.646 / 13
+  assert.equal(Motore.dovuto(b, "2019-06").pos, 602.89);   // 7.837,59 / 13
+  // stesso risultato partendo dal minimo 2021 o da quello 2016-2018
+  for (const [contratto, posizione] of [["c2019c", 8646], ["c2016", 7837.59]])
+    assert.equal(Motore.dovuto(cfg({ contratto, posizione }), "2024-01").pos, 721.08);
+});
+
+test("posizione sopra il minimo nel CCNL 2022-2024: prima del 2024 si toglie l'incremento art. 36", () => {
+  const b = cfg({ contratto: "c2022", posizione: 10728 });
+  assert.equal(Motore.dovuto(b, "2024-01").pos, 825.23);   // 10.728 / 13
+  assert.equal(Motore.dovuto(b, "2023-01").pos, 769.23);   // 10.000 / 13
+});
