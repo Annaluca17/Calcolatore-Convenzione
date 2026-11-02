@@ -5,7 +5,7 @@ Lo stipendio tabellare annuo (13 mensilità) fissato dal CCNL per la fascia del 
 _Evitare_: "stipendio base", "V.50" usato come sinonimo del tabellare.
 
 **Posizione conglobata (V.92)**
-Quota del tabellare di fascia che la procedura paghe espone separatamente per la fascia B (retribuzione di posizione ex 8ª‑9ª qualifica, € 231,38/mese). Non si aggiunge al tabellare: V.50 + V.92 = tabellare di fascia. Il CCNL non la nomina.
+Quota della retribuzione di posizione conglobata nello stipendio tabellare dal CCNL 1.3.2011 (biennio 2008‑2009): € 3.008 annui per le fasce A e B, cioè € 231,38/mese × 13. Confermata dal CCNL 17.12.2020 (art. 111, punto B); il CCNL 2022‑2024 non la nomina. Non si aggiunge al tabellare: V.50 + V.92 = tabellare di fascia (2022‑2024: 3.615,22 + 231,38 = 3.846,60). La procedura paghe la espone a parte per la fascia B perché, per i segretari di enti da 3.000 a 10.000 abitanti, ai fini TFS il tabellare si considera ridotto di questa quota (messaggio INPS n. 1272 del 3.4.2023). Nella fascia B degli enti oltre 10.000 abitanti l'ente può pagarla tutta in V.50.
 _Evitare_: "indennità", "voce aggiuntiva".
 
 **Esposizione**
